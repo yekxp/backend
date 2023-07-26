@@ -1,4 +1,4 @@
-package com.developers.sosyalapp.contoller;
+package com.developers.sosyalapp.controller;
 
 import com.developers.sosyalapp.dto.request.CreateExampleRequest;
 import com.developers.sosyalapp.dto.response.ApiResponse;
