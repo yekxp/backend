@@ -13,15 +13,22 @@ import com.developers.sosyalapp.repository.AccountRepository;
 public class AccountService {
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public AccountService(AccountRepository accountRepository, AccountMapper accountMapper) {
+    public AccountService(AccountRepository accountRepository, AccountMapper accountMapper,
+            PasswordEncoder passwordEncoder) {
         this.accountRepository = accountRepository;
         this.accountMapper = accountMapper;
+        this.passwordEncoder = passwordEncoder;
+
     }
 
     public ApiResponse<CreateAccountResponse> createAccount(CreateAccountRequest request) {
         try {
-            Account account = accountRepository.save(accountMapper.toEntity(request.getAccount()));
+            String ecryptedPassword = passwordEncoder.encrypt(request.getAccount().getPassword());
+            Account newAccount = accountMapper.toEntity(request.getAccount());
+            newAccount.setPassword(ecryptedPassword);
+            Account account = accountRepository.save(newAccount);
             return new ApiResponse<>(true, new CreateAccountResponse(accountMapper.toDto(account)),
                     "Account created successfully.");
         } catch (Exception e) {
