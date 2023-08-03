@@ -16,3 +16,5 @@ Pull request'ini yeni branch'ten -> `develop` branch'ine merge olacak şekilde a
 'Reviewer' olarak birini ekle (Şu an için @Mert18). Kodun review olmadan merge edilmemeli.
 Review kabul edildikten sonra merge etmeyi unutma.
 
+Kod içerisindeki değişken isimleri, fonksiyon isimleri ve yorumlar İngilizce dilinde olmalı.
+
