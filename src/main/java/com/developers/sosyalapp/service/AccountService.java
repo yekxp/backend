@@ -19,16 +19,14 @@ public class AccountService {
         this.accountMapper = accountMapper;
     }
 
- public ApiResponse<CreateAccountResponse> createAccount(CreateAccountRequest request) {
+    public ApiResponse<CreateAccountResponse> createAccount(CreateAccountRequest request) {
         try {
             Account account = accountRepository.save(accountMapper.toEntity(request.getAccount()));
-            return new ApiResponse<>(true, new CreateAccountResponse(accountMapper.toDto(account)),"Account created successfully.");
+            return new ApiResponse<>(true, new CreateAccountResponse(accountMapper.toDto(account)),
+                    "Account created successfully.");
         } catch (Exception e) {
-            return new ApiResponse<>(false, null, "Example could not be created.");
+            return new ApiResponse<>(false, null, "Account could not be created.");
         }
     }
-    
 
-
-    
 }
