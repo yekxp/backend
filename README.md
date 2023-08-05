@@ -18,3 +18,13 @@ Review kabul edildikten sonra merge etmeyi unutma.
 
 Kod içerisindeki değişken isimleri, fonksiyon isimleri ve yorumlar İngilizce dilinde olmalı.
 
+Örnek src/main/resources/application.properties
+```
+spring.datasource.url=jdbc:postgresql://localhost:5432/sosyalapp
+spring.datasource.username=x
+spring.datasource.password=y
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.hibernate.ddl-auto=update
+# swagger-ui custom path
+springdoc.swagger-ui.path=/swagger-ui.html
+``` 
