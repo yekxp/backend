@@ -1,5 +1,7 @@
 package com.developers.sosyalapp.controller;
 
+import com.developers.sosyalapp.dto.request.LoginRequest;
+import com.developers.sosyalapp.dto.response.AuthenticationResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,5 +28,10 @@ public class AccountController {
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<CreateAccountResponse>> createAccount(@RequestBody CreateAccountRequest request) {
         return ResponseEntity.ok(accountService.createAccount(request));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<AuthenticationResponse>> login(@RequestBody LoginRequest request) throws Exception {
+        return ResponseEntity.ok(accountService.login(request));
     }
 }
