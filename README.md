@@ -21,10 +21,17 @@ Kod içerisindeki değişken isimleri, fonksiyon isimleri ve yorumlar İngilizce
 Örnek src/main/resources/application.properties
 ```
 spring.datasource.url=jdbc:postgresql://localhost:5432/sosyalapp
-spring.datasource.username=x
-spring.datasource.password=y
+spring.datasource.username=postgres
+spring.datasource.password=postgres
 spring.datasource.driver-class-name=org.postgresql.Driver
 spring.jpa.hibernate.ddl-auto=update
 # swagger-ui custom path
 springdoc.swagger-ui.path=/swagger-ui.html
+
+jwt.secret=eyJhbGciOiJIUzI1NiyJ8zAeld3LfFTgPU3cAVxpKm7EnBVZxTWOVlCVI5kGg
+# 1 day
+jwt.accessExpirationDateInMs=86400000
+
+# 3 days
+jwt.refreshExpirationDateInMs= 259200000
 ``` 
