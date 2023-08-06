@@ -8,5 +8,8 @@ import com.developers.sosyalapp.model.Account;
 
 
 public interface AccountRepository extends JpaRepository<Account, String>  {
-    public List<Account> findByEmailOrUsername(String email, String username);
+
+    Account findByUsername(String username);
+    Account findByEmail(String email);
+    List<Account> findByEmailOrUsername(String email, String username);
 }
