@@ -5,8 +5,6 @@ import java.util.List;
 import com.developers.sosyalapp.dto.request.LoginRequest;
 import com.developers.sosyalapp.dto.response.AuthenticationResponse;
 import com.developers.sosyalapp.exception.InvalidCredentialsException;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,8 +18,6 @@ import com.developers.sosyalapp.mapper.AccountMapper;
 import com.developers.sosyalapp.model.Account;
 import com.developers.sosyalapp.repository.AccountRepository;
 
-import javax.security.auth.login.AccountNotFoundException;
-
 @Service
 public class AccountService implements UserDetailsService {
     private final AccountRepository accountRepository;
@@ -29,19 +25,22 @@ public class AccountService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
+    private final MailService mailService;
+
     public AccountService(AccountRepository accountRepository, AccountMapper accountMapper,
-                          PasswordEncoder passwordEncoder, JwtService jwtService) {
+                          PasswordEncoder passwordEncoder, JwtService jwtService, MailService mailService) {
         this.accountRepository = accountRepository;
         this.accountMapper = accountMapper;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.mailService = mailService;
     }
 
     public ApiResponse<CreateAccountResponse> createAccount(CreateAccountRequest request) {
         try {
             List<Account> foundAccounts = accountRepository.findByEmailOrUsername(request.getAccount().getEmail(),
                     request.getAccount().getUsername());
-            if (foundAccounts.size() > 0) {
+            if (!foundAccounts.isEmpty()) {
                 throw new EmailOrUsernameAlreadyExistsException("Email or username already exists.");
             }
 
@@ -50,10 +49,11 @@ public class AccountService implements UserDetailsService {
             newAccount.setPassword(ecryptedPassword);
 
             Account account = accountRepository.save(newAccount);
+            mailService.sendMail(request.getAccount().getEmail());
             return new ApiResponse<>(true, new CreateAccountResponse(accountMapper.toDto(account)),
                     "Account created successfully.");
         } catch(EmailOrUsernameAlreadyExistsException e) {
-            return new ApiResponse<>(false, null, e.getMessage());
+            return new ApiResponse<>(false, e.getMessage());
         } catch (Exception e) {
             return new ApiResponse<>(false, null, "Account could not be created.");
         }
