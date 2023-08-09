@@ -40,7 +40,7 @@ public class AccountService implements UserDetailsService {
         try {
             List<Account> foundAccounts = accountRepository.findByEmailOrUsername(request.getAccount().getEmail(),
                     request.getAccount().getUsername());
-            if (foundAccounts.size() > 0) {
+            if (!foundAccounts.isEmpty()) {
                 throw new EmailOrUsernameAlreadyExistsException("Email or username already exists.");
             }
 
@@ -53,7 +53,6 @@ public class AccountService implements UserDetailsService {
             return new ApiResponse<>(true, new CreateAccountResponse(accountMapper.toDto(account)),
                     "Account created successfully.");
         } catch(EmailOrUsernameAlreadyExistsException e) {
-            Account account=new Account();
             return new ApiResponse<>(false, e.getMessage());
         } catch (Exception e) {
             return new ApiResponse<>(false, null, "Account could not be created.");

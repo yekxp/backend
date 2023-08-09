@@ -1,7 +1,6 @@
 package com.developers.sosyalapp.service;
 
 import com.sendgrid.Request;
-import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
@@ -9,11 +8,9 @@ import com.sendgrid.helpers.mail.objects.Email;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.logging.Logger;
 
 @Service
 public class MailService {
-    private static final Logger logger = Logger.getLogger(MailService.class.getName());
     private String sendGridApiKey;
 
     @Value("${sendgrid.key}")
