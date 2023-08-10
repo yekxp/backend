@@ -1,11 +1,8 @@
 package com.developers.sosyalapp.model;
 
+import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -22,6 +19,9 @@ public class Account implements UserDetails {
     private String email;
     private String password;
     private Role role = Role.USER;
+
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private AccountProperties accountProperties;
 
     public String getId() {
         return id;
