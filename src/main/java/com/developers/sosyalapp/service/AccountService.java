@@ -6,6 +6,8 @@ import com.developers.sosyalapp.dto.request.LoginRequest;
 import com.developers.sosyalapp.dto.response.AuthenticationResponse;
 import com.developers.sosyalapp.exception.InvalidCredentialsException;
 import com.developers.sosyalapp.model.AccountProperties;
+import com.developers.sosyalapp.model.VerifyEmail;
+import jakarta.transaction.Transactional;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -31,18 +33,20 @@ public class AccountService implements UserDetailsService {
     private final AccountMapper accountMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-
     private final MailService mailService;
+    private final VerificationService verificationService;
 
     public AccountService(AccountRepository accountRepository, AccountMapper accountMapper,
-                          PasswordEncoder passwordEncoder, JwtService jwtService, MailService mailService) {
+                          PasswordEncoder passwordEncoder, JwtService jwtService, MailService mailService, VerificationService verificationService) {
         this.accountRepository = accountRepository;
         this.accountMapper = accountMapper;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.mailService = mailService;
+        this.verificationService = verificationService;
     }
 
+    @Transactional
     public ApiResponse<CreateAccountResponse> createAccount(CreateAccountRequest request) {
         try {
             List<Account> foundAccounts = accountRepository.findByEmailOrUsername(request.getAccount().getEmail(),
@@ -59,9 +63,8 @@ public class AccountService implements UserDetailsService {
             newAccount.setAccountProperties(accountProperties);
 
             Account account = accountRepository.save(newAccount);
-
-            mailService.sendMail(request.getAccount().getEmail());
-
+            VerifyEmail verifyEmail = verificationService.createVerification(account.getEmail());
+            mailService.sendVerificationMail(request.getAccount().getEmail(), verifyEmail.getToken());
             return new ApiResponse<>(true, new CreateAccountResponse(accountMapper.toDto(account)),
                     "Account created successfully.");
         } catch(EmailOrUsernameAlreadyExistsException e) {
@@ -108,4 +111,6 @@ public class AccountService implements UserDetailsService {
         authenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
         return authenticationProvider;
     }
+
+
 }

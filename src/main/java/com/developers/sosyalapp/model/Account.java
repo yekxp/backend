@@ -20,10 +20,9 @@ public class Account implements UserDetails {
     private String username;
     private String email;
     private String password;
-
+    private Boolean verified = false;
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER;
-
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private AccountProperties accountProperties;
 
@@ -39,7 +38,6 @@ public class Account implements UserDetails {
         this.accountProperties = accountProperties;
     }
 
-    private boolean verified =false;
 
     public String getId() {
         return id;
@@ -112,5 +110,13 @@ public class Account implements UserDetails {
 
     public void setAccountProperties(AccountProperties accountProperties) {
         this.accountProperties = accountProperties;
+    }
+
+    public Boolean getVerified() {
+        return verified;
+    }
+
+    public void setVerified(Boolean verified) {
+        this.verified = verified;
     }
 }

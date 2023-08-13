@@ -4,15 +4,13 @@ import com.developers.sosyalapp.dto.AccountDto;
 import com.developers.sosyalapp.dto.VerifyEmailDto;
 
 public class VerifyEmailRequest {
-
-    private VerifyEmailDto verifyemail;
-    public VerifyEmailDto getVerifyemail() {
-        return verifyemail;
+    private VerifyEmailDto verifyMail;
+    public VerifyEmailDto getVerifyMail() {
+        return verifyMail;
     }
 
-    public void setVerifyemail( VerifyEmailDto verifyemail) {
-
-        this.verifyemail=verifyemail;
+    public void setVerifyMail(VerifyEmailDto verifyMail) {
+        this.verifyMail=verifyMail;
 
     }
 }

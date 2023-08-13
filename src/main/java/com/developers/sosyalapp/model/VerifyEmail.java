@@ -7,9 +7,8 @@ import jakarta.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "verifyemail")
+@Table(name = "verify_email")
 public class VerifyEmail {
-
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
@@ -17,7 +16,14 @@ public class VerifyEmail {
     private String email;
     private String token;
 
-    private Account account;
+    public VerifyEmail(String email, String token) {
+        this.email = email;
+        this.token = token;
+    }
+
+    public VerifyEmail() {
+
+    }
 
     public String getId() {
         return id;
