@@ -6,7 +6,6 @@ import com.developers.sosyalapp.dto.VerifyEmailDto;
 public class CreateAccountResponse {
     private AccountDto account;
 
-    private VerifyEmailDto verifyemail;
     public AccountDto getAccount() {
         return account;
     }
@@ -16,9 +15,8 @@ public class CreateAccountResponse {
     }
 
 
-    public CreateAccountResponse(AccountDto account,VerifyEmailDto verifyemail) {
+    public CreateAccountResponse(AccountDto account) {
         this.account = account;
-        this.verifyemail=verifyemail;
     }
 
 }
