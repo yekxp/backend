@@ -12,17 +12,32 @@ import org.springframework.stereotype.Service;
 @Service
 public class MailService {
     private String sendGridApiKey;
+    private String emailFrom;
+    private String applicationUrl;
 
     @Value("${sendgrid.key}")
     public void setSendGridApiKey(String sendGridApiKey) {
         this.sendGridApiKey = sendGridApiKey;
     }
 
-    public void sendMail(String email){
-        Email from = new Email("mertplayschess@outlook.com");
-        String subject = "Welcome to Sosyal App";
+    @Value("${email.from}")
+    public void setEmailFrom(String emailFrom) {
+        this.emailFrom = emailFrom;
+    }
+
+    @Value("${application.url}")
+    public void setApplicationUrl(String applicationUrl) {
+        this.applicationUrl = applicationUrl;
+    }
+
+    public void sendVerificationMail(String email, String token){
+        Email from = new Email(emailFrom);
+        String subject = "Sosyal App Verification Email";
         Email to = new Email(email);
-        Content content = new Content("text/plain","aaaaaa");
+
+        Content content = new Content("text/plain", "Please verify your email address by clicking the link below:\n" +
+                applicationUrl + "/api/v1/verification/verify-mail?email=" + email + "&token=" + token);
+
         Mail mail = new Mail(from, subject, to, content);
         SendGrid sg = new SendGrid(sendGridApiKey);
         Request request = new Request();
