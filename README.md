@@ -34,4 +34,9 @@ jwt.accessExpirationDateInMs=86400000
 
 # 3 days
 jwt.refreshExpirationDateInMs= 259200000
+sendgrid.key= <sendgrid-key>
+
+email.from=mertplayschess@outlook.com
+
+application.url=http://localhost:8080
 ``` 
