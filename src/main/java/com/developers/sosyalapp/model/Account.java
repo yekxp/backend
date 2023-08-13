@@ -4,9 +4,11 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 
 @Entity
 @Table(name = "accounts")
@@ -18,10 +20,24 @@ public class Account implements UserDetails {
     private String username;
     private String email;
     private String password;
+
+    @Enumerated(EnumType.STRING)
     private Role role = Role.USER;
 
-    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private AccountProperties accountProperties;
+
+    public Account() {
+    }
+
+    public Account(String id, String username, String email, String password, Role role, AccountProperties accountProperties) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.accountProperties = accountProperties;
+    }
 
     public String getId() {
         return id;
@@ -32,22 +48,22 @@ public class Account implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 
     public String getEmail() {
@@ -59,7 +75,7 @@ public class Account implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return role.getAuthorities();
+        return Collections.singleton(new SimpleGrantedAuthority(role.name()));
     }
 
     public String getPassword() {
@@ -85,5 +101,13 @@ public class Account implements UserDetails {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public AccountProperties getAccountProperties() {
+        return accountProperties;
+    }
+
+    public void setAccountProperties(AccountProperties accountProperties) {
+        this.accountProperties = accountProperties;
     }
 }

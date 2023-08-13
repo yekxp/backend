@@ -5,9 +5,14 @@ import java.util.List;
 import com.developers.sosyalapp.dto.request.LoginRequest;
 import com.developers.sosyalapp.dto.response.AuthenticationResponse;
 import com.developers.sosyalapp.exception.InvalidCredentialsException;
+import com.developers.sosyalapp.model.AccountProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.developers.sosyalapp.dto.request.CreateAccountRequest;
@@ -17,6 +22,8 @@ import com.developers.sosyalapp.exception.EmailOrUsernameAlreadyExistsException;
 import com.developers.sosyalapp.mapper.AccountMapper;
 import com.developers.sosyalapp.model.Account;
 import com.developers.sosyalapp.repository.AccountRepository;
+
+import javax.security.auth.login.AccountNotFoundException;
 
 @Service
 public class AccountService implements UserDetailsService {
@@ -48,8 +55,13 @@ public class AccountService implements UserDetailsService {
             Account newAccount = accountMapper.toEntity(request.getAccount());
             newAccount.setPassword(ecryptedPassword);
 
+            AccountProperties accountProperties = new AccountProperties();
+            newAccount.setAccountProperties(accountProperties);
+
             Account account = accountRepository.save(newAccount);
+
             mailService.sendMail(request.getAccount().getEmail());
+
             return new ApiResponse<>(true, new CreateAccountResponse(accountMapper.toDto(account)),
                     "Account created successfully.");
         } catch(EmailOrUsernameAlreadyExistsException e) {
@@ -82,5 +94,18 @@ public class AccountService implements UserDetailsService {
         }
 
         return account;
+    }
+
+    public Account findAccountById(String accountId) throws AccountNotFoundException {
+        return accountRepository.findById(accountId)
+                .orElseThrow(() -> new AccountNotFoundException("Account not found."));
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(AccountService.this);
+        authenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
+        return authenticationProvider;
     }
 }

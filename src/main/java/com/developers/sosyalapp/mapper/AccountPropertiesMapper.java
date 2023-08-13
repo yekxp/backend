@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class AccountPropertiesMapper {
     public AccountPropertiesDto toDto(AccountProperties entity) {
         AccountPropertiesDto dto = new AccountPropertiesDto();
-        dto.setAccountId(entity.getAccountId());
+        dto.setId(entity.getId());
         dto.setAge(entity.getAge());
         dto.setCity(entity.getCity());
         dto.setDistrict(entity.getDistrict());
@@ -19,7 +19,7 @@ public class AccountPropertiesMapper {
 
     public AccountProperties toEntity(AccountPropertiesDto dto) {
         AccountProperties entity = new AccountProperties();
-        entity.setAccountId(dto.getAccountId());
+        entity.setId(dto.getId());
         entity.setAge(dto.getAge());
         entity.setCity(dto.getCity());
         entity.setDistrict(dto.getDistrict());

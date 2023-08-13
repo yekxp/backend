@@ -7,24 +7,36 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "account_properties")
 public class AccountProperties {
     @Id
-    private String accountId;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private String id;
     private int age;
     private boolean smoking;
     private double income;
     private String city;
     private String district;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "accountId")
+    @OneToOne(mappedBy = "accountProperties")
     private Account account;
 
-    public String getAccountId() {
-        return accountId;
+    public AccountProperties() {
     }
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
+    public AccountProperties(int age, boolean smoking, double income, String city, String district, Account account) {
+        this.age = age;
+        this.smoking = smoking;
+        this.income = income;
+        this.city = city;
+        this.district = district;
+        this.account = account;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public int getAge() {
