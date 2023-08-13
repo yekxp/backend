@@ -23,6 +23,8 @@ public class Account implements UserDetails {
     private String password;
     private Role role = Role.USER;
 
+    private boolean verified =false;
+
     public String getId() {
         return id;
     }
@@ -34,6 +36,7 @@ public class Account implements UserDetails {
     public boolean isAccountNonExpired() {
         return false;
     }
+
 
     @Override
     public boolean isAccountNonLocked() {
