@@ -57,4 +57,5 @@ public class UpdateAccountPropertiesRequest {
     public void setDistrict(String district) {
         this.district = district;
     }
+
 }
