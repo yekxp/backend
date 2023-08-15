@@ -1,6 +1,5 @@
 package com.developers.sosyalapp.service;
 
-import com.developers.sosyalapp.dto.request.CreateAccountPropertiesRequest;
 import com.developers.sosyalapp.dto.request.UpdateAccountPropertiesRequest;
 import com.developers.sosyalapp.dto.response.ApiResponse;
 import com.developers.sosyalapp.mapper.AccountPropertiesMapper;
