@@ -14,7 +14,6 @@ public class CreateAccountRequest {
     @Email(message = "Email should be valid")
     private String email;
     @NotBlank(message = "Password is required")
-    @Min(value = 8, message = "Password must be at least 8 characters long")
     private String password;
 
     public CreateAccountRequest() {
