@@ -49,14 +49,16 @@ public class AccountService implements UserDetailsService {
     @Transactional
     public ApiResponse<CreateAccountResponse> createAccount(CreateAccountRequest request) {
         try {
-            List<Account> foundAccounts = accountRepository.findByEmailOrUsername(request.getAccount().getEmail(),
-                    request.getAccount().getUsername());
+            List<Account> foundAccounts = accountRepository.findByEmailOrUsername(request.getEmail(),
+                    request.getUsername());
             if (!foundAccounts.isEmpty()) {
                 throw new EmailOrUsernameAlreadyExistsException("Email or username already exists.");
             }
 
-            String ecryptedPassword = passwordEncoder.encrypt(request.getAccount().getPassword());
-            Account newAccount = accountMapper.toEntity(request.getAccount());
+            String ecryptedPassword = passwordEncoder.encrypt(request.getPassword());
+            Account newAccount = new Account();
+            newAccount.setUsername(request.getUsername());
+            newAccount.setEmail(request.getEmail());
             newAccount.setPassword(ecryptedPassword);
 
             AccountProperties accountProperties = new AccountProperties();
@@ -64,7 +66,7 @@ public class AccountService implements UserDetailsService {
 
             Account account = accountRepository.save(newAccount);
             VerifyEmail verifyEmail = verificationService.createVerification(account.getEmail());
-            mailService.sendVerificationMail(request.getAccount().getEmail(), verifyEmail.getToken());
+            mailService.sendVerificationMail(request.getEmail(), verifyEmail.getToken());
             return new ApiResponse<>(true, new CreateAccountResponse(accountMapper.toDto(account)),
                     "Account created successfully.");
         } catch(EmailOrUsernameAlreadyExistsException e) {
