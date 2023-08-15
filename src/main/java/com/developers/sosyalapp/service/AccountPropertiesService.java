@@ -30,19 +30,6 @@ public class AccountPropertiesService {
     }
 
     @Transactional
-    public ApiResponse createAccountProperties(CreateAccountPropertiesRequest request) {
-        try {
-            AccountProperties accountProperties = accountPropertiesMapper.toEntity(request.getAccountProperties());
-            accountPropertiesRepository.save(accountProperties);
-            logger.info("Account properties created successfully: {}", accountProperties);
-            return new ApiResponse<>(true, "Account properties created successfully");
-        } catch (Exception e) {
-            logger.error("AccountPropertiesService createAccountProperties error: " + e);
-            return new ApiResponse<>(false, "Account properties could not be created");
-        }
-    }
-
-    @Transactional
     public ApiResponse updateAccountProperties(UpdateAccountPropertiesRequest request, String token) {
         try {
             String jwtToken = token.substring(7);
