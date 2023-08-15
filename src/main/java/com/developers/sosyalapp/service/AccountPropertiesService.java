@@ -1,5 +1,6 @@
 package com.developers.sosyalapp.service;
 
+import com.developers.sosyalapp.dto.AccountPropertiesDto;
 import com.developers.sosyalapp.dto.request.UpdateAccountPropertiesRequest;
 import com.developers.sosyalapp.dto.response.ApiResponse;
 import com.developers.sosyalapp.mapper.AccountPropertiesMapper;
@@ -48,7 +49,12 @@ public class AccountPropertiesService {
             String accountId = jwtService.extractAccountId(jwtToken);
             Account account = accountService.findAccountById(accountId);
 
-            AccountProperties accountProperties = accountPropertiesMapper.toEntity(request.getAccountProperties());
+            AccountProperties accountProperties = new AccountProperties();
+            accountProperties.setAge(request.getAge());
+            accountProperties.setCity(request.getCity());
+            accountProperties.setDistrict(request.getDistrict());
+            accountProperties.setIncome(request.getIncome());
+            accountProperties.setSmoking(request.isSmoking());
             accountProperties.setId(account.getAccountProperties().getId());
             accountPropertiesRepository.save(accountProperties);
             logger.info("Account properties updated successfully: {}", accountProperties);
