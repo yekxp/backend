@@ -8,6 +8,8 @@ import com.developers.sosyalapp.exception.InvalidCredentialsException;
 import com.developers.sosyalapp.model.AccountProperties;
 import com.developers.sosyalapp.model.VerifyEmail;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -45,7 +47,7 @@ public class AccountService implements UserDetailsService {
         this.mailService = mailService;
         this.verificationService = verificationService;
     }
-
+    private final static Logger logger = LoggerFactory.getLogger(AccountService.class);
     @Transactional
     public ApiResponse<CreateAccountResponse> createAccount(CreateAccountRequest request) {
         try {
@@ -65,6 +67,7 @@ public class AccountService implements UserDetailsService {
             newAccount.setAccountProperties(accountProperties);
 
             Account account = accountRepository.save(newAccount);
+            logger.info("created account");
             VerifyEmail verifyEmail = verificationService.createVerification(account.getEmail());
             mailService.sendVerificationMail(request.getEmail(), verifyEmail.getToken());
             return new ApiResponse<>(true, new CreateAccountResponse(accountMapper.toDto(account)),
@@ -80,9 +83,11 @@ public class AccountService implements UserDetailsService {
         try {
             Account account = accountRepository.findByEmail(loginRequest.getEmail());
             if(!passwordEncoder.matches(loginRequest.getPassword(), account.getPassword())) {
+                logger.error("email or password is wrong!!");
                 throw new InvalidCredentialsException("Email ya da şifre yanlış.");
             }
             AuthenticationResponse authResponse = jwtService.generateToken(account);
+            logger.info("login successful");
             return new ApiResponse<>(true, authResponse ,"Login successful.");
         } catch (InvalidCredentialsException e) {
             throw new InvalidCredentialsException("Invalid credentials.");
