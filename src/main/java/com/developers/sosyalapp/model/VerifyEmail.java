@@ -4,8 +4,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "verify_email")
 public class VerifyEmail {
@@ -16,36 +23,9 @@ public class VerifyEmail {
     private String email;
     private String token;
 
-    public VerifyEmail(String email, String token) {
-        this.email = email;
-        this.token = token;
-    }
 
-    public VerifyEmail() {
-
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
+    public VerifyEmail(String email, String verificationToken) {
+        this.email=email;
+        this.token=verificationToken;
     }
 }
