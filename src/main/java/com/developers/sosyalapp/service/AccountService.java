@@ -47,7 +47,7 @@ public class AccountService implements UserDetailsService {
         this.mailService = mailService;
         this.verificationService = verificationService;
     }
-    private final static Logger logger = LoggerFactory.getLogger(AccountService.class);
+
     @Transactional
     public ApiResponse<CreateAccountResponse> createAccount(CreateAccountRequest request) {
         try {
@@ -67,7 +67,6 @@ public class AccountService implements UserDetailsService {
             newAccount.setAccountProperties(accountProperties);
 
             Account account = accountRepository.save(newAccount);
-            logger.info("created account");
             VerifyEmail verifyEmail = verificationService.createVerification(account.getEmail());
             mailService.sendVerificationMail(request.getEmail(), verifyEmail.getToken());
             return new ApiResponse<>(true, new CreateAccountResponse(accountMapper.toDto(account)),
@@ -83,11 +82,9 @@ public class AccountService implements UserDetailsService {
         try {
             Account account = accountRepository.findByEmail(loginRequest.getEmail());
             if(!passwordEncoder.matches(loginRequest.getPassword(), account.getPassword())) {
-                logger.error("email or password is wrong!!");
                 throw new InvalidCredentialsException("Email ya da şifre yanlış.");
             }
             AuthenticationResponse authResponse = jwtService.generateToken(account);
-            logger.info("login successful");
             return new ApiResponse<>(true, authResponse ,"Login successful.");
         } catch (InvalidCredentialsException e) {
             throw new InvalidCredentialsException("Invalid credentials.");
