@@ -1,11 +1,7 @@
 package com.developers.sosyalapp.dto.request;
 
-import com.developers.sosyalapp.dto.AccountDto;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import org.hibernate.validator.constraints.Length;
-
 
 public class CreateAccountRequest {
     @NotBlank(message = "Username is required")

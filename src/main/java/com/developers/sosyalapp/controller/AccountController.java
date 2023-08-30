@@ -30,7 +30,7 @@ public class AccountController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<AuthenticationResponse>> login(@RequestBody LoginRequest request) throws Exception {
+    public ResponseEntity<ApiResponse<AuthenticationResponse>> login(@Valid @RequestBody LoginRequest request) throws Exception {
         return ResponseEntity.ok(accountService.login(request));
     }
 }
