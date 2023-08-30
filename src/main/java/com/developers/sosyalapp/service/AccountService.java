@@ -8,6 +8,8 @@ import com.developers.sosyalapp.exception.InvalidCredentialsException;
 import com.developers.sosyalapp.model.AccountProperties;
 import com.developers.sosyalapp.model.VerifyEmail;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
