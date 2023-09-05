@@ -1,6 +1,6 @@
 package com.developers.sosyalapp.service;
 
-import com.developers.sosyalapp.dto.request.CreateAccountPropertiesRequest;
+import com.developers.sosyalapp.dto.AccountPropertiesDto;
 import com.developers.sosyalapp.dto.request.UpdateAccountPropertiesRequest;
 import com.developers.sosyalapp.dto.response.ApiResponse;
 import com.developers.sosyalapp.mapper.AccountPropertiesMapper;
@@ -30,26 +30,18 @@ public class AccountPropertiesService {
     }
 
     @Transactional
-    public ApiResponse createAccountProperties(CreateAccountPropertiesRequest request) {
-        try {
-            AccountProperties accountProperties = accountPropertiesMapper.toEntity(request.getAccountProperties());
-            accountPropertiesRepository.save(accountProperties);
-            logger.info("Account properties created successfully: {}", accountProperties);
-            return new ApiResponse<>(true, "Account properties created successfully");
-        } catch (Exception e) {
-            logger.error("AccountPropertiesService createAccountProperties error: " + e);
-            return new ApiResponse<>(false, "Account properties could not be created");
-        }
-    }
-
-    @Transactional
     public ApiResponse updateAccountProperties(UpdateAccountPropertiesRequest request, String token) {
         try {
             String jwtToken = token.substring(7);
             String accountId = jwtService.extractAccountId(jwtToken);
             Account account = accountService.findAccountById(accountId);
 
-            AccountProperties accountProperties = accountPropertiesMapper.toEntity(request.getAccountProperties());
+            AccountProperties accountProperties = new AccountProperties();
+            accountProperties.setAge(request.getAge());
+            accountProperties.setCity(request.getCity());
+            accountProperties.setDistrict(request.getDistrict());
+            accountProperties.setIncome(request.getIncome());
+            accountProperties.setSmoking(request.isSmoking());
             accountProperties.setId(account.getAccountProperties().getId());
             accountPropertiesRepository.save(accountProperties);
             logger.info("Account properties updated successfully: {}", accountProperties);
