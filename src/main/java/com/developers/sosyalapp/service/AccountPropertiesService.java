@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 public class AccountPropertiesService {
     private final AccountPropertiesRepository accountPropertiesRepository;
     private final AccountPropertiesMapper accountPropertiesMapper;
-
     private final AccountService accountService;
     private final JwtService jwtService;
     private static final Logger logger = LoggerFactory.getLogger(AccountPropertiesService.class);
@@ -25,7 +24,6 @@ public class AccountPropertiesService {
         this.accountPropertiesRepository = accountPropertiesRepository;
         this.accountPropertiesMapper = accountPropertiesMapper;
         this.accountService = accountService;
-
         this.jwtService = jwtService;
     }
 

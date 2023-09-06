@@ -92,7 +92,7 @@ public class JwtService {
                 account.getEmail(),
                 account.getRole()
         );
-
+        logger.info("Token generated successfully: {}", authenticationResponse.getEmail());
         return authenticationResponse;
     }
 
