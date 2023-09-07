@@ -4,8 +4,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public class CreateAccountRequest {
-    @NotBlank(message = "Username is required")
-    private String username;
+    @NotBlank(message = "First name is required")
+    private String firstName;
+    private String lastName;
     @NotBlank(message = "Email is required")
     @Email(message = "Email should be valid")
     private String email;
@@ -14,18 +15,28 @@ public class CreateAccountRequest {
 
     public CreateAccountRequest() {
     }
-    public CreateAccountRequest(String username, String email, String password) {
-        this.username = username;
+
+    public CreateAccountRequest(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {

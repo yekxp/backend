@@ -5,6 +5,8 @@ import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ public class MailService {
     private String sendGridApiKey;
     private String emailFrom;
     private String applicationUrl;
+    private static final Logger logger = LoggerFactory.getLogger(MailService.class);
 
     @Value("${sendgrid.key}")
     public void setSendGridApiKey(String sendGridApiKey) {
@@ -46,7 +49,9 @@ public class MailService {
             request.setEndpoint("mail/send");
             request.setBody(mail.build());
             sg.api(request);
+            logger.info("Verification email sent to: {}", email);
         } catch (Exception e) {
+            logger.info("Error sending verification email to: {}", email);
             throw new RuntimeException("Error sending email: " + e.getMessage());
         }
     }

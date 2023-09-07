@@ -5,7 +5,6 @@ import java.util.List;
 import com.developers.sosyalapp.dto.request.LoginRequest;
 import com.developers.sosyalapp.dto.response.AuthenticationResponse;
 import com.developers.sosyalapp.exception.InvalidCredentialsException;
-import com.developers.sosyalapp.model.AccountProperties;
 import com.developers.sosyalapp.model.VerifyEmail;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -37,6 +36,7 @@ public class AccountService implements UserDetailsService {
     private final JwtService jwtService;
     private final MailService mailService;
     private final VerificationService verificationService;
+    private static final Logger logger = LoggerFactory.getLogger(AccountService.class);
 
     public AccountService(AccountRepository accountRepository, AccountMapper accountMapper,
                           PasswordEncoder passwordEncoder, JwtService jwtService, MailService mailService, VerificationService verificationService) {
@@ -59,21 +59,21 @@ public class AccountService implements UserDetailsService {
 
             String ecryptedPassword = passwordEncoder.encrypt(request.getPassword());
             Account newAccount = new Account();
-            newAccount.setUsername(request.getUsername());
             newAccount.setEmail(request.getEmail());
             newAccount.setPassword(ecryptedPassword);
 
-            AccountProperties accountProperties = new AccountProperties();
-            newAccount.setAccountProperties(accountProperties);
 
             Account account = accountRepository.save(newAccount);
+            logger.info("Account created successfully: {}", account.getUsername());
             VerifyEmail verifyEmail = verificationService.createVerification(account.getEmail());
             mailService.sendVerificationMail(request.getEmail(), verifyEmail.getToken());
             return new ApiResponse<>(true, new CreateAccountResponse(accountMapper.toDto(account)),
                     "Account created successfully.");
         } catch(EmailOrUsernameAlreadyExistsException e) {
+            logger.error("Email or username already exists: " + request.getEmail() + " - " + request.getUsername());
             return new ApiResponse<>(false, e.getMessage());
         } catch (Exception e) {
+            logger.error("An error occurred while creating account: " + e.getMessage());
             return new ApiResponse<>(false, null, "Account could not be created.");
         }
     }
@@ -87,8 +87,10 @@ public class AccountService implements UserDetailsService {
             AuthenticationResponse authResponse = jwtService.generateToken(account);
             return new ApiResponse<>(true, authResponse ,"Login successful.");
         } catch (InvalidCredentialsException e) {
+            logger.error("Login failed, invalid credentials: " + loginRequest.getEmail());
             throw new InvalidCredentialsException("Invalid credentials.");
         } catch (Exception e) {
+            logger.error("Login failed with an unknown reason: " + e.getMessage());
             throw new Exception("Login failed: " + e.getMessage());
         }
     }
