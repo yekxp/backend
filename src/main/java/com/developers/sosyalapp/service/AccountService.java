@@ -5,7 +5,6 @@ import java.util.List;
 import com.developers.sosyalapp.dto.request.LoginRequest;
 import com.developers.sosyalapp.dto.response.AuthenticationResponse;
 import com.developers.sosyalapp.exception.InvalidCredentialsException;
-import com.developers.sosyalapp.model.AccountProperties;
 import com.developers.sosyalapp.model.VerifyEmail;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -60,12 +59,9 @@ public class AccountService implements UserDetailsService {
 
             String ecryptedPassword = passwordEncoder.encrypt(request.getPassword());
             Account newAccount = new Account();
-            newAccount.setUsername(request.getUsername());
             newAccount.setEmail(request.getEmail());
             newAccount.setPassword(ecryptedPassword);
 
-            AccountProperties accountProperties = new AccountProperties();
-            newAccount.setAccountProperties(accountProperties);
 
             Account account = accountRepository.save(newAccount);
             logger.info("Account created successfully: {}", account.getUsername());
