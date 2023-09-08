@@ -3,7 +3,7 @@ package com.developers.hireasenior.service;
 import com.developers.hireasenior.dto.response.ApiResponse;
 import com.developers.hireasenior.model.Account;
 import com.developers.hireasenior.model.VerifyEmail;
-import com.developers.hireasenior.repository.AuthRepository;
+import com.developers.hireasenior.repository.AccountRepository;
 import com.developers.hireasenior.repository.VerifyMailRepository;
 import com.developers.hireasenior.util.RandomGenerator;
 import jakarta.transaction.Transactional;
@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class VerificationService {
     private final VerifyMailRepository verifyMailRepository;
-    private final AuthRepository authRepository;
+    private final AccountRepository accountRepository;
     private static final Logger logger = LoggerFactory.getLogger(VerificationService.class);
 
-    public VerificationService(VerifyMailRepository verifyMailRepository, AuthRepository authRepository) {
+    public VerificationService(VerifyMailRepository verifyMailRepository, AccountRepository accountRepository) {
         this.verifyMailRepository = verifyMailRepository;
-        this.authRepository = authRepository;
+        this.accountRepository = accountRepository;
     }
     public VerifyEmail createVerification(String email){
         try {
@@ -63,9 +63,9 @@ public class VerificationService {
     }
 
     public void verifyAccount(String email) {
-        Account account = authRepository.findByEmail(email);
+        Account account = accountRepository.findByEmail(email);
         account.setVerified(true);
-        authRepository.save(account);
+        accountRepository.save(account);
         logger.info("Account verified successfully: {}", account.getEmail());
     }
 }
