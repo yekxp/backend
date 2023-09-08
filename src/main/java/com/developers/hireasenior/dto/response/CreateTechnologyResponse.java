@@ -1,6 +1,6 @@
 package com.developers.hireasenior.dto.response;
 
-import com.developers.hireasenior.dto.AccountDto;
+import com.developers.hireasenior.model.Technology;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegistrationResponse {
-    private AccountDto account;
+public class CreateTechnologyResponse {
+    private Technology technology;
 }

@@ -5,6 +5,7 @@ import com.developers.hireasenior.dto.response.AuthenticationResponse;
 import com.developers.hireasenior.exception.InvalidCredentialsException;
 import com.developers.hireasenior.model.Role;
 import com.developers.hireasenior.model.VerifyEmail;
+import com.developers.hireasenior.repository.AccountRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,13 +24,12 @@ import com.developers.hireasenior.dto.response.RegistrationResponse;
 import com.developers.hireasenior.exception.EmailAlreadyExistsException;
 import com.developers.hireasenior.mapper.AccountMapper;
 import com.developers.hireasenior.model.Account;
-import com.developers.hireasenior.repository.AuthRepository;
 
 import javax.security.auth.login.AccountNotFoundException;
 
 @Service
 public class AuthService implements UserDetailsService {
-    private final AuthRepository authRepository;
+    private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
@@ -37,9 +37,9 @@ public class AuthService implements UserDetailsService {
     private final VerificationService verificationService;
     private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
 
-    public AuthService(AuthRepository authRepository, AccountMapper accountMapper,
+    public AuthService(AccountRepository accountRepository, AccountMapper accountMapper,
                        PasswordEncoder passwordEncoder, JwtService jwtService, MailService mailService, VerificationService verificationService) {
-        this.authRepository = authRepository;
+        this.accountRepository = accountRepository;
         this.accountMapper = accountMapper;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
@@ -50,7 +50,7 @@ public class AuthService implements UserDetailsService {
     @Transactional
     public ApiResponse<RegistrationResponse> register(RegistrationRequest request) {
         try {
-            Account foundAccount = authRepository.findByEmail(request.getEmail());
+            Account foundAccount = accountRepository.findByEmail(request.getEmail());
             if (foundAccount != null) {
                 throw new EmailAlreadyExistsException("Email already exists.");
             }
@@ -63,7 +63,7 @@ public class AuthService implements UserDetailsService {
             newAccount.setPassword(ecryptedPassword);
             newAccount.setRole(Role.USER);
 
-            Account account = authRepository.save(newAccount);
+            Account account = accountRepository.save(newAccount);
             logger.info("Account registered successfully: {}", account.getFirstName());
             VerifyEmail verifyEmail = verificationService.createVerification(account.getEmail());
             mailService.sendVerificationMail(request.getEmail(), verifyEmail.getToken());
@@ -80,7 +80,7 @@ public class AuthService implements UserDetailsService {
 
     public ApiResponse<AuthenticationResponse> login(LoginRequest loginRequest) throws Exception {
         try {
-            Account account = authRepository.findByEmail(loginRequest.getEmail());
+            Account account = accountRepository.findByEmail(loginRequest.getEmail());
             if(!passwordEncoder.matches(loginRequest.getPassword(), account.getPassword())) {
                 throw new InvalidCredentialsException("Email ya da şifre yanlış.");
             }
@@ -97,7 +97,7 @@ public class AuthService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Account account = authRepository.findByEmail(email);
+        Account account = accountRepository.findByEmail(email);
         if (account == null) {
             throw new UsernameNotFoundException("Account not found.");
         }
@@ -105,7 +105,7 @@ public class AuthService implements UserDetailsService {
     }
 
     public Account findAccountById(String accountId) throws AccountNotFoundException {
-        return authRepository.findById(accountId)
+        return accountRepository.findById(accountId)
                 .orElseThrow(() -> new AccountNotFoundException("Account not found."));
     }
 
