@@ -25,8 +25,6 @@ public class SessionRequest {
     private Date startDate;
     private Date endDate;
     private Double hourlyPrice;
-    @OneToMany(mappedBy = "sessionRequest")
-    private List<Technology> technologies;
     private String createdAt;
     private String updatedAt;
 }

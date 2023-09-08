@@ -2,7 +2,6 @@ package com.developers.hireasenior.service;
 
 import com.developers.hireasenior.dto.request.CreateTechnologyRequest;
 import com.developers.hireasenior.dto.response.ApiResponse;
-import com.developers.hireasenior.dto.response.AuthenticationResponse;
 import com.developers.hireasenior.dto.response.CreateTechnologyResponse;
 import com.developers.hireasenior.exception.ResourceAlreadyExistsException;
 import com.developers.hireasenior.model.Technology;
@@ -10,8 +9,6 @@ import com.developers.hireasenior.repository.TechnologyRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class TechnologyService {
