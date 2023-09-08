@@ -33,6 +33,8 @@ public class Account implements UserDetails {
     private Title title;
     private Double hourlyPrice;
     private String currency;
+    @OneToMany(mappedBy = "junior")
+    private List<SessionRequest> sessionRequests;
 
     @CreatedDate
     private Date createdAt = new Date();
