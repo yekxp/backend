@@ -10,9 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Data
@@ -35,6 +33,13 @@ public class Account implements UserDetails {
     private String currency;
     @OneToMany(mappedBy = "junior")
     private List<SessionRequest> sessionRequests;
+    @ManyToMany
+    @JoinTable(
+            name = "account_technologies",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "technology_id")
+    )
+    private Set<Technology> technologies = new HashSet<>();
 
     @CreatedDate
     private Date createdAt = new Date();
