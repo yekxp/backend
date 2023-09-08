@@ -10,10 +10,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.developers</groupId>
-	<artifactId>sosyalapp</artifactId>
+	<artifactId>hireasenior</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>sosyalapp</name>
-	<description>Sosyal App</description>
+	<name>hireasenior</name>
+	<description>Hire A Senior</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
