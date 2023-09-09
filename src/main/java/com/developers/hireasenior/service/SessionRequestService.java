@@ -1,6 +1,7 @@
 package com.developers.hireasenior.service;
 
 import com.developers.hireasenior.dto.request.CreateSessionRequestRequest;
+import com.developers.hireasenior.dto.response.AcceptSessionResponse;
 import com.developers.hireasenior.dto.response.ApiResponse;
 import com.developers.hireasenior.dto.response.CreateSessionRequestResponse;
 import com.developers.hireasenior.exception.ResourceNotFoundException;
@@ -43,6 +44,20 @@ public class SessionRequestService {
             return new ApiResponse<>(true, new CreateSessionRequestResponse(sessionRequest), "Session request created successfully.");
         } catch (Exception e) {
             return new ApiResponse<>(false, null, "An unknown error occurred when creating session request.");
+        }
+    }
+
+    public ApiResponse<AcceptSessionResponse> acceptSessionRequest(String sessionId) {
+        try {
+            SessionRequest sessionRequest = sessionRequestRepository.findById(sessionId).orElseThrow(() -> new ResourceNotFoundException("session request"));
+            sessionRequest.setStatus(SessionStatus.ACCEPTED);
+            sessionRequestRepository.save(sessionRequest);
+            logger.info("Session request accepted successfully: {}", sessionRequest.getSenior().getEmail());
+            return new ApiResponse<>(true, new AcceptSessionResponse(sessionRequest), "Session request accepted successfully.");
+        } catch (ResourceNotFoundException e) {
+            return new ApiResponse<>(false, null, "Session request not found.");
+        } catch (Exception e) {
+            return new ApiResponse<>(false, null, "An unknown error occurred when accepting session request.");
         }
     }
 

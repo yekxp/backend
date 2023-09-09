@@ -11,8 +11,8 @@ import java.util.Date;
 
 @Entity
 @Data
-@Table(name = "session_requests")
-public class SessionRequest {
+@Table(name = "sessions")
+public class Session {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
@@ -31,4 +31,5 @@ public class SessionRequest {
     private Date createdAt;
     @LastModifiedDate
     private Date updatedAt;
+
 }

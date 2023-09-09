@@ -1,8 +1,11 @@
 package com.developers.hireasenior.controller;
 
+import com.developers.hireasenior.dto.request.AcceptSessionRequest;
 import com.developers.hireasenior.dto.request.CreateSessionRequestRequest;
+import com.developers.hireasenior.dto.response.AcceptSessionResponse;
 import com.developers.hireasenior.dto.response.ApiResponse;
 import com.developers.hireasenior.dto.response.CreateSessionRequestResponse;
+import com.developers.hireasenior.dto.response.CreateSessionResponse;
 import com.developers.hireasenior.service.SessionRequestService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -23,5 +26,10 @@ public class SessionRequestController {
     @PostMapping("/create")
     public ResponseEntity<ApiResponse<CreateSessionRequestResponse>> createSessionRequest(@Valid @RequestBody CreateSessionRequestRequest request) {
         return ResponseEntity.ok(sessionRequestService.createSessionRequest(request));
+    }
+
+    @PostMapping("/accept")
+    public ResponseEntity<ApiResponse<AcceptSessionResponse>> acceptSessionRequest(@Valid @RequestBody AcceptSessionRequest request) {
+        return ResponseEntity.ok(sessionRequestService.acceptSessionRequest(request.getSession().getId()));
     }
 }
