@@ -4,15 +4,13 @@ import com.developers.hireasenior.dto.response.ApiResponse;
 import com.developers.hireasenior.dto.response.CancelSessionResponse;
 import com.developers.hireasenior.dto.response.CompleteSessionResponse;
 import com.developers.hireasenior.repository.SessionRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class SessionService {
     private final SessionRepository sessionRepository;
-
-    public SessionService(SessionRepository sessionRepository) {
-        this.sessionRepository = sessionRepository;
-    }
 
     public ApiResponse<CancelSessionResponse> cancelSession(String id) {
         return null;

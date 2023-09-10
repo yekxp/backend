@@ -7,6 +7,7 @@ import com.developers.hireasenior.model.Role;
 import com.developers.hireasenior.model.VerifyEmail;
 import com.developers.hireasenior.repository.AccountRepository;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +29,7 @@ import com.developers.hireasenior.model.Account;
 import javax.security.auth.login.AccountNotFoundException;
 
 @Service
+@AllArgsConstructor
 public class AuthService implements UserDetailsService {
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
@@ -36,16 +38,6 @@ public class AuthService implements UserDetailsService {
     private final MailService mailService;
     private final VerificationService verificationService;
     private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
-
-    public AuthService(AccountRepository accountRepository, AccountMapper accountMapper,
-                       PasswordEncoder passwordEncoder, JwtService jwtService, MailService mailService, VerificationService verificationService) {
-        this.accountRepository = accountRepository;
-        this.accountMapper = accountMapper;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtService = jwtService;
-        this.mailService = mailService;
-        this.verificationService = verificationService;
-    }
 
     @Transactional
     public ApiResponse<RegistrationResponse> register(RegistrationRequest request) {

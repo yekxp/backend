@@ -10,20 +10,17 @@ import com.developers.hireasenior.model.SessionRequest;
 import com.developers.hireasenior.model.SessionStatus;
 import com.developers.hireasenior.repository.AccountRepository;
 import com.developers.hireasenior.repository.SessionRequestRepository;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class SessionRequestService {
     private final SessionRequestRepository sessionRequestRepository;
     private final AccountRepository accountRepository;
     private static final Logger logger = LoggerFactory.getLogger(SessionRequestService.class);
-
-    public SessionRequestService(SessionRequestRepository sessionRequestRepository, AccountRepository accountRepository) {
-        this.sessionRequestRepository = sessionRequestRepository;
-        this.accountRepository = accountRepository;
-    }
 
     public ApiResponse<CreateSessionRequestResponse> createSessionRequest(CreateSessionRequestRequest request) {
         try {
