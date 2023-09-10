@@ -1,13 +1,15 @@
 package com.developers.hireasenior.dto.response;
 
-import com.developers.hireasenior.model.Technology;
+import com.developers.hireasenior.model.Language;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateTechnologyResponse {
-    private Technology technology;
+public class ListLanguagesResponse {
+    private List<Language> languages;
 }

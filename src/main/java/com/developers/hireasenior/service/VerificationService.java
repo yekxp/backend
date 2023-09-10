@@ -7,20 +7,18 @@ import com.developers.hireasenior.repository.AccountRepository;
 import com.developers.hireasenior.repository.VerifyMailRepository;
 import com.developers.hireasenior.util.RandomGenerator;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class VerificationService {
     private final VerifyMailRepository verifyMailRepository;
     private final AccountRepository accountRepository;
     private static final Logger logger = LoggerFactory.getLogger(VerificationService.class);
 
-    public VerificationService(VerifyMailRepository verifyMailRepository, AccountRepository accountRepository) {
-        this.verifyMailRepository = verifyMailRepository;
-        this.accountRepository = accountRepository;
-    }
     public VerifyEmail createVerification(String email){
         try {
             // Create 32 long random string
