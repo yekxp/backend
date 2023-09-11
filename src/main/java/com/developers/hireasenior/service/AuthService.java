@@ -59,6 +59,7 @@ public class AuthService implements UserDetailsService {
             newAccount.setTechnologies(request.getTechnologies());
             newAccount.setLanguagesSpoken(request.getLanguagesSpoken());
             newAccount.setAvailablePeriod(request.getAvailablePeriod());
+            newAccount.setDateOfBirth(request.getDateOfBirth());
 
             Account account = accountRepository.save(newAccount);
             logger.info("Account registered successfully: {}", account.getFirstName());

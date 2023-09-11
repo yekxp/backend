@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.Set;
 
 @Data
@@ -28,4 +29,5 @@ public class RegistrationRequest {
     private Set<Technology> technologies;
     private Set<Language> languagesSpoken;
     private String availablePeriod;
+    private Date dateOfBirth;
 }
