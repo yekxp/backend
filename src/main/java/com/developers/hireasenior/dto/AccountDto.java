@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.commons.codec.language.bm.Lang;
 
+import java.util.Date;
 import java.util.Set;
 
 @Data
@@ -26,4 +27,5 @@ public class AccountDto {
     private Set<Technology> technologies;
     private Set<Language> languagesSpoken;
     private String availablePeriod;
+    private Date dateOfBirth;
 }

@@ -50,6 +50,7 @@ public class Account implements UserDetails {
     private Set<Language> languagesSpoken = new HashSet<>();
 
     private String availablePeriod;
+    private Date dateOfBirth;
 
     @CreatedDate
     private Date createdAt = new Date();
