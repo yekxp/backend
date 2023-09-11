@@ -54,6 +54,11 @@ public class AuthService implements UserDetailsService {
             newAccount.setEmail(request.getEmail());
             newAccount.setPassword(ecryptedPassword);
             newAccount.setRole(Role.USER);
+            newAccount.setCurrency(request.getCurrency());
+            newAccount.setHourlyPrice(request.getHourlyPrice());
+            newAccount.setTechnologies(request.getTechnologies());
+            newAccount.setLanguagesSpoken(request.getLanguagesSpoken());
+            newAccount.setAvailablePeriod(request.getAvailablePeriod());
 
             Account account = accountRepository.save(newAccount);
             logger.info("Account registered successfully: {}", account.getFirstName());
