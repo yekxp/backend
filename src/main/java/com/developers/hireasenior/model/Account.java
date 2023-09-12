@@ -41,6 +41,17 @@ public class Account implements UserDetails {
     )
     private Set<Technology> technologies = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "languages_spoken",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "language_id")
+    )
+    private Set<Language> languagesSpoken = new HashSet<>();
+
+    private String availablePeriod;
+    private Date dateOfBirth;
+
     @CreatedDate
     private Date createdAt = new Date();
     @LastModifiedDate
