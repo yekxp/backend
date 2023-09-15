@@ -2,10 +2,7 @@ package com.developers.hireasenior.service;
 
 import com.developers.hireasenior.dto.request.CreateSessionRequestRequest;
 import com.developers.hireasenior.dto.request.UpdateSessionRequestRequest;
-import com.developers.hireasenior.dto.response.AcceptSessionResponse;
-import com.developers.hireasenior.dto.response.ApiResponse;
-import com.developers.hireasenior.dto.response.CreateSessionRequestResponse;
-import com.developers.hireasenior.dto.response.UpdateSessionRequestResponse;
+import com.developers.hireasenior.dto.response.*;
 import com.developers.hireasenior.exception.ResourceNotFoundException;
 import com.developers.hireasenior.model.Account;
 import com.developers.hireasenior.model.SessionRequest;
@@ -51,6 +48,8 @@ public class SessionRequestService {
             SessionRequest sessionRequest = sessionRequestRepository.findById(sessionId).orElseThrow(() -> new ResourceNotFoundException("session request"));
             sessionRequest.setStatus(SessionStatus.ACCEPTED);
             sessionRequestRepository.save(sessionRequest);
+
+            // TODO: Send email to junior
             logger.info("Session request accepted successfully: {}", sessionRequest.getSenior().getEmail());
             return new ApiResponse<>(true, new AcceptSessionResponse(sessionRequest), "Session request accepted successfully.");
         } catch (ResourceNotFoundException e) {
@@ -66,9 +65,9 @@ public class SessionRequestService {
                     .orElseThrow(() -> new ResourceNotFoundException("session request"));
             // Session is updated, so status is set to pending again.
             sessionRequest.setStatus(SessionStatus.PENDING);
-            sessionRequest.setHourlyPrice(request.getSession().getHourlyPrice());
-            sessionRequest.setStartDate(request.getSession().getStartDate());
-            sessionRequest.setEndDate(request.getSession().getEndDate());
+            sessionRequest.setHourlyPrice(request.getSessionRequest().getHourlyPrice());
+            sessionRequest.setStartDate(request.getSessionRequest().getStartDate());
+            sessionRequest.setEndDate(request.getSessionRequest().getEndDate());
             sessionRequestRepository.save(sessionRequest);
 
             // TODO: Send email to senior
@@ -81,4 +80,18 @@ public class SessionRequestService {
         }
     }
 
+    public ApiResponse<CancelSessionRequestResponse> cancelSessionRequest(String id) {
+        try {
+            SessionRequest sessionRequest = sessionRequestRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("session request"));
+            sessionRequest.setStatus(SessionStatus.CANCELLED);
+            sessionRequestRepository.save(sessionRequest);
+            // TODO: Send email to senior
+            return new ApiResponse<>(true, new CancelSessionRequestResponse(sessionRequest), "Session request cancelled successfully.");
+        } catch (ResourceNotFoundException e) {
+            return new ApiResponse<>(false, null, "Session request not found.");
+        } catch (Exception e) {
+            return new ApiResponse<>(false, null, "An unknown error occurred when cancelling session request.");
+        }
+    }
 }

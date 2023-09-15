@@ -30,4 +30,9 @@ public class SessionRequestController {
     public ResponseEntity<ApiResponse<UpdateSessionRequestResponse>> updateSessionRequest(@PathVariable String id, @Valid @RequestBody UpdateSessionRequestRequest request) {
         return ResponseEntity.ok(sessionRequestService.updateSessionRequest(id, request));
     }
+
+    @GetMapping("/cancel/{id}")
+    public ResponseEntity<ApiResponse<CancelSessionRequestResponse>> cancelSessionRequest(@PathVariable String id) {
+        return ResponseEntity.ok(sessionRequestService.cancelSessionRequest(id));
+    }
 }
