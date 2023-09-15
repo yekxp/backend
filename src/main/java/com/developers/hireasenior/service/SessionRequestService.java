@@ -1,9 +1,11 @@
 package com.developers.hireasenior.service;
 
 import com.developers.hireasenior.dto.request.CreateSessionRequestRequest;
+import com.developers.hireasenior.dto.request.UpdateSessionRequestRequest;
 import com.developers.hireasenior.dto.response.AcceptSessionResponse;
 import com.developers.hireasenior.dto.response.ApiResponse;
 import com.developers.hireasenior.dto.response.CreateSessionRequestResponse;
+import com.developers.hireasenior.dto.response.UpdateSessionRequestResponse;
 import com.developers.hireasenior.exception.ResourceNotFoundException;
 import com.developers.hireasenior.model.Account;
 import com.developers.hireasenior.model.SessionRequest;
@@ -55,6 +57,27 @@ public class SessionRequestService {
             return new ApiResponse<>(false, null, "Session request not found.");
         } catch (Exception e) {
             return new ApiResponse<>(false, null, "An unknown error occurred when accepting session request.");
+        }
+    }
+
+    public ApiResponse<UpdateSessionRequestResponse> updateSessionRequest(String id, UpdateSessionRequestRequest request) {
+        try {
+            SessionRequest sessionRequest = sessionRequestRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("session request"));
+            // Session is updated, so status is set to pending again.
+            sessionRequest.setStatus(SessionStatus.PENDING);
+            sessionRequest.setHourlyPrice(request.getSession().getHourlyPrice());
+            sessionRequest.setStartDate(request.getSession().getStartDate());
+            sessionRequest.setEndDate(request.getSession().getEndDate());
+            sessionRequestRepository.save(sessionRequest);
+
+            // TODO: Send email to senior
+            logger.info("Session request updated successfully: {}", sessionRequest.getJunior().getEmail());
+            return new ApiResponse<>(true, new UpdateSessionRequestResponse(sessionRequest), "Session request updated successfully.");
+        } catch (ResourceNotFoundException e) {
+            return new ApiResponse<>(false, null, "Session request not found.");
+        } catch (Exception e) {
+            return new ApiResponse<>(false, null, "An unknown error occurred when updating session request.");
         }
     }
 
