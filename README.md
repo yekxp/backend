@@ -1,5 +1,7 @@
 # Sosyal App
 
+Please read the CONTRIBUTING.md first.
+
 ## Development
 1. Select an issue to solve.
 2. Checkout to develop branch `git checkout develop`
@@ -11,3 +13,4 @@ git add .
 git commit -m "<issue-id>: <A meaningful description>"
 git push -u origin <branch-name>
 ```
+
