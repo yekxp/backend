@@ -43,9 +43,12 @@ public class SessionRequestService {
         }
     }
 
-    public ApiResponse<AcceptSessionResponse> acceptSessionRequest(String sessionId) {
+    public ApiResponse<AcceptSessionResponse> acceptSessionRequest(String sessionId, Account account) {
         try {
             SessionRequest sessionRequest = sessionRequestRepository.findById(sessionId).orElseThrow(() -> new ResourceNotFoundException("session request"));
+            if(!sessionRequest.getSenior().getId().equals(account.getId())){
+                return new ApiResponse<>(false, null, "Only the requested senior can accept the session request.");
+            }
             sessionRequest.setStatus(SessionStatus.ACCEPTED);
             sessionRequestRepository.save(sessionRequest);
 
@@ -59,10 +62,16 @@ public class SessionRequestService {
         }
     }
 
-    public ApiResponse<UpdateSessionRequestResponse> updateSessionRequest(String id, UpdateSessionRequestRequest request) {
+    public ApiResponse<UpdateSessionRequestResponse> updateSessionRequest(String id,
+                                                                          UpdateSessionRequestRequest request,
+                                                                          Account account) {
         try {
             SessionRequest sessionRequest = sessionRequestRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("session request"));
+
+            if(!sessionRequest.getJunior().getId().equals(account.getId())){
+                return new ApiResponse<>(false, null, "Only the requested junior can update the session request.");
+            }
             // Session is updated, so status is set to pending again.
             sessionRequest.setStatus(SessionStatus.PENDING);
             sessionRequest.setHourlyPrice(request.getSessionRequest().getHourlyPrice());

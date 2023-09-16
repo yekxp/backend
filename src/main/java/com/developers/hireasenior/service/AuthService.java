@@ -3,7 +3,9 @@ package com.developers.hireasenior.service;
 import com.developers.hireasenior.dto.request.LoginRequest;
 import com.developers.hireasenior.dto.response.AuthenticationResponse;
 import com.developers.hireasenior.exception.InvalidCredentialsException;
+import com.developers.hireasenior.exception.TitleNotAllowedException;
 import com.developers.hireasenior.model.Role;
+import com.developers.hireasenior.model.Title;
 import com.developers.hireasenior.model.VerifyEmail;
 import com.developers.hireasenior.repository.AccountRepository;
 import jakarta.transaction.Transactional;
@@ -113,6 +115,15 @@ public class AuthService implements UserDetailsService {
         authenticationProvider.setUserDetailsService(AuthService.this);
         authenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
         return authenticationProvider;
+    }
+
+    public Account doesTokenHaveTitleOf(String token, Title title) throws AccountNotFoundException, TitleNotAllowedException {
+        String requesterId = jwtService.extractAccountId(token.replace("Bearer ", ""));
+        Account account = findAccountById(requesterId);
+        if(!(account.getTitle() == title)) {
+            throw new TitleNotAllowedException("Only " + title + " can execute this operation.");
+        }
+        return account;
     }
 
 
