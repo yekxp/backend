@@ -19,7 +19,7 @@ After successfully pushed the changes to the issue branch, open a pull request f
 
 Example src/main/resources/application.properties
 ```
-spring.datasource.url=jdbc:postgresql://localhost:5432/sosyalapp
+spring.datasource.url=jdbc:postgresql://localhost:5432/hire-a-senior
 spring.datasource.username=postgres
 spring.datasource.password=postgres
 spring.datasource.driver-class-name=org.postgresql.Driver
