@@ -14,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class SessionRequestService {
@@ -101,6 +103,16 @@ public class SessionRequestService {
             return new ApiResponse<>(false, null, "Session request not found.");
         } catch (Exception e) {
             return new ApiResponse<>(false, null, "An unknown error occurred when cancelling session request.");
+        }
+    }
+
+    public ApiResponse<ListSessionRequestsResponse> listSessionRequests(Account account) {
+        try {
+            List<SessionRequest> outgoingSessionRequests = sessionRequestRepository.findByJuniorId(account.getId());
+            List<SessionRequest> incomingSessionRequests = sessionRequestRepository.findBySeniorId(account.getId());
+            return new ApiResponse<>(true, new ListSessionRequestsResponse(outgoingSessionRequests, incomingSessionRequests), "Session requests listed successfully.");
+        } catch (Exception e) {
+            return new ApiResponse<>(false, null, "An unknown error occurred when listing session requests.");
         }
     }
 }

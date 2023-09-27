@@ -124,6 +124,11 @@ public class AuthService implements UserDetailsService {
         return authenticationProvider;
     }
 
+    public Account extractAccountFromToken(String token) throws AccountNotFoundException {
+        String accountId = jwtService.extractAccountId(token.replace("Bearer ", ""));
+        return findAccountById(accountId);
+    }
+
     public Account doesTokenHaveTitleOf(String token, Title title) throws AccountNotFoundException, TitleNotAllowedException {
         String requesterId = jwtService.extractAccountId(token.replace("Bearer ", ""));
         Account account = findAccountById(requesterId);
