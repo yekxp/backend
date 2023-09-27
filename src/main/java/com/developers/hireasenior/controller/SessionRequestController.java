@@ -60,12 +60,11 @@ public class SessionRequestController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponse<UpdateSessionRequestResponse>> updateSessionRequest
-            (@PathVariable String id, @Valid @RequestBody UpdateSessionRequestRequest request,
-             @RequestHeader (name="Authorization") String token) {
+    public ResponseEntity<ApiResponse<UpdateSessionRequestResponse>> updateSessionRequest(@PathVariable String id,
+                                                                                          @Valid @RequestBody UpdateSessionRequestRequest request,
+                                                                                          @RequestHeader (name="Authorization") String token) {
         try {
             Account account = authService.doesTokenHaveTitleOf(token, Title.JUNIOR);
-
             return ResponseEntity.ok(sessionRequestService.updateSessionRequest(id, request, account));
         } catch (AccountNotFoundException e) {
             return ResponseEntity.ok(new ApiResponse<>(false, null, "Account not found."));
@@ -79,5 +78,20 @@ public class SessionRequestController {
     @GetMapping("/cancel/{id}")
     public ResponseEntity<ApiResponse<CancelSessionRequestResponse>> cancelSessionRequest(@PathVariable String id) {
         return ResponseEntity.ok(sessionRequestService.cancelSessionRequest(id));
+    }
+
+    /*
+        List all session requests of the user.
+     */
+    @GetMapping("/list")
+    public ResponseEntity<ApiResponse<ListSessionRequestsResponse>> listSessionRequests(@RequestHeader (name="Authorization") String token) {
+        try {
+            Account account = authService.extractAccountFromToken(token.replace("Bearer ", ""));
+            return ResponseEntity.ok(sessionRequestService.listSessionRequests(account));
+        } catch (AccountNotFoundException e) {
+            return ResponseEntity.ok(new ApiResponse<>(false, null, "You are not authorized."));
+        } catch (Exception e) {
+            return ResponseEntity.ok(new ApiResponse<>(false, null, "An unknown error occurred when creating session request."));
+        }
     }
 }
