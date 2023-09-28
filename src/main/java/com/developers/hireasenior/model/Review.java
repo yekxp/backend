@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @Table(name = "reviews")
@@ -16,6 +18,6 @@ public class Review {
     private String juniorId;
     private String seniorId;
 
-    private String date;
+    private LocalDateTime date;
     private String rating;
 }
