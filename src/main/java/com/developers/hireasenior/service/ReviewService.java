@@ -39,7 +39,7 @@ public class ReviewService {
     public ApiResponse<ListSeniorReviewsResponse> listSeniorReviews(String seniorId) {
         try {
             List<Review> reviews = reviewRepository.findBySeniorId(seniorId);
-            return new ApiResponse<ListSeniorReviewsResponse>(true, new ListSeniorReviewsResponse(reviews), "Reviews fetched successfully.");
+            return new ApiResponse<>(true, new ListSeniorReviewsResponse(reviews), "Reviews fetched successfully.");
         } catch (Exception e) {
             return new ApiResponse<>(false, null, "Reviews could not be fetched.");
         }
