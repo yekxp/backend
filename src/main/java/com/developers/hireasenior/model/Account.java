@@ -28,33 +28,24 @@ public class Account implements UserDetails {
     private String email;
     private String password;
     private Boolean verified = false;
-    @Enumerated(EnumType.STRING)
-    private Role role = Role.USER;
-
     private Title title;
     private Double hourlyPrice;
     private String currency;
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.USER;
     @OneToMany(mappedBy = "junior")
     private List<SessionRequest> sessionRequests;
+
     @ManyToMany
-    @JoinTable(
-            name = "account_technologies",
-            joinColumns = @JoinColumn(name = "account_id"),
-            inverseJoinColumns = @JoinColumn(name = "technology_id")
-    )
+    @JoinTable(name = "account_technologies", joinColumns = @JoinColumn(name = "account_id"), inverseJoinColumns = @JoinColumn(name = "technology_id"))
     private Set<Technology> technologies = new HashSet<>();
 
     @ManyToMany
-    @JoinTable(
-            name = "languages_spoken",
-            joinColumns = @JoinColumn(name = "account_id"),
-            inverseJoinColumns = @JoinColumn(name = "language_id")
-    )
+    @JoinTable(name = "languages_spoken", joinColumns = @JoinColumn(name = "account_id"), inverseJoinColumns = @JoinColumn(name = "language_id"))
     private Set<Language> languagesSpoken = new HashSet<>();
 
     private String availablePeriod;
     private Date dateOfBirth;
-
     @CreatedDate
     private Date createdAt = new Date();
     @LastModifiedDate
