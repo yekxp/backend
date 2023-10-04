@@ -144,4 +144,21 @@ public class JwtService {
         byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+
+    public AuthenticationResponse refreshToken(String refreshToken) throws Exception {
+        try {
+            Claims claims = extractAllClaims(refreshToken);
+            String accountId = claims.get("accountId", String.class);
+            String email = claims.get("email", String.class);
+            boolean isAdmin = claims.get("isAdmin", Boolean.class);
+            Account account = new Account();
+            account.setId(accountId);
+            account.setEmail(email);
+            account.setRole(isAdmin ? Role.ADMIN : Role.USER);
+            return generateToken(account);
+        } catch (Exception e) {
+            logger.error("Token refresh failed with an unknown reason: " + e.getMessage());
+            throw new Exception("Error when refreshing token.");
+        }
+    }
 }
