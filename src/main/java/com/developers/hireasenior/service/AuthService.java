@@ -138,5 +138,15 @@ public class AuthService implements UserDetailsService {
         return account;
     }
 
+    public ApiResponse<AuthenticationResponse> refreshToken(String refreshToken) throws Exception {
+        try {
+            AuthenticationResponse authResponse = jwtService.refreshToken(refreshToken);
+            return new ApiResponse<>(true, authResponse ,"Token refreshed successfully.");
+        } catch (Exception e) {
+            logger.error("Token refresh failed with an unknown reason: " + e.getMessage());
+            return new ApiResponse<>(false, null, "Error when refreshing token.");
+        }
+    }
+
 
 }
