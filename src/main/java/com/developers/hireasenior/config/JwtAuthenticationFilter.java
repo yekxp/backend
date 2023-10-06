@@ -1,8 +1,11 @@
 package com.developers.hireasenior.config;
 
+import com.developers.hireasenior.dto.response.ApiResponse;
 import com.developers.hireasenior.model.Account;
 import com.developers.hireasenior.service.AuthService;
 import com.developers.hireasenior.service.JwtService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,11 +45,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        jwt = authorizationHeader.substring(7);
-        email = jwtService.extractUsername(jwt);
-        if(email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        try {
+            jwt = authorizationHeader.substring(7);
+            email = jwtService.extractUsername(jwt);
             Account account = (Account) authService.loadUserByUsername(email);
-
             if(jwtService.isTokenValid(jwt, account)) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         account,
@@ -58,7 +60,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 );
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
-            filterChain.doFilter(request, response);
+        } catch (ExpiredJwtException e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+
+            // Set CORS headers to allow requests from your frontend domain
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Access-Control-Allow-Methods", "*");
+            response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+            response.getWriter().write(new ObjectMapper().writeValueAsString(
+                    new ApiResponse<>(false, null, "Your JWT token has expired. Please log in again."))
+            );
+            return;
         }
+
+        filterChain.doFilter(request, response);
     }
 }
