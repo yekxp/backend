@@ -1,7 +1,9 @@
 package com.developers.hireasenior.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
@@ -16,6 +18,7 @@ import java.util.*;
 @Data
 @Table(name = "accounts")
 @JsonPropertyOrder({"id", "firstName", "email", "password", "verified", "role", "title", "hourlyPrice", "currency", "createdAt", "updatedAt"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "sessionRequests", "technologies", "languagesSpoken"})
 public class Account implements UserDetails {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -25,33 +28,24 @@ public class Account implements UserDetails {
     private String email;
     private String password;
     private Boolean verified = false;
-    @Enumerated(EnumType.STRING)
-    private Role role = Role.USER;
-
     private Title title;
     private Double hourlyPrice;
     private String currency;
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.USER;
     @OneToMany(mappedBy = "junior")
     private List<SessionRequest> sessionRequests;
+
     @ManyToMany
-    @JoinTable(
-            name = "account_technologies",
-            joinColumns = @JoinColumn(name = "account_id"),
-            inverseJoinColumns = @JoinColumn(name = "technology_id")
-    )
+    @JoinTable(name = "account_technologies", joinColumns = @JoinColumn(name = "account_id"), inverseJoinColumns = @JoinColumn(name = "technology_id"))
     private Set<Technology> technologies = new HashSet<>();
 
     @ManyToMany
-    @JoinTable(
-            name = "languages_spoken",
-            joinColumns = @JoinColumn(name = "account_id"),
-            inverseJoinColumns = @JoinColumn(name = "language_id")
-    )
+    @JoinTable(name = "languages_spoken", joinColumns = @JoinColumn(name = "account_id"), inverseJoinColumns = @JoinColumn(name = "language_id"))
     private Set<Language> languagesSpoken = new HashSet<>();
 
     private String availablePeriod;
     private Date dateOfBirth;
-
     @CreatedDate
     private Date createdAt = new Date();
     @LastModifiedDate

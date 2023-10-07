@@ -1,5 +1,7 @@
 # Backend
 
+Please read the CONTRIBUTING.md first.
+
 ## Development
 
 1. Update the project to the latest version: `git pull`
@@ -16,8 +18,8 @@ git push -u origin <branch-name>
 
 After successfully pushed the changes to the issue branch, open a pull request from the new branch to `develop` branch. Optionally add a reviewer(for now @Mert18). That's it.
 
+Example application.properties:
 
-Example src/main/resources/application.properties
 ```
 spring.datasource.url=jdbc:postgresql://localhost:5432/hire-a-senior
 spring.datasource.username=postgres
