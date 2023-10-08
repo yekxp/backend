@@ -28,7 +28,3 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    volumes:
-      - ./src/main/resources/init.sh:/docker-entrypoint-initdb.d/init.sh
-      - ./src/main/resources/schema.sql:/data/schema.sql
-      - ./src/main/resources/data.sql:/data/data.sql
