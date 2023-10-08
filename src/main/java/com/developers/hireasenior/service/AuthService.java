@@ -85,7 +85,7 @@ public class AuthService implements UserDetailsService {
             Account account = accountRepository.findByEmail(loginRequest.getEmail())
                     .orElseThrow(() -> new ResourceNotFoundException("Account with this email does not exist."));
             if(!passwordEncoder.matches(loginRequest.getPassword(), account.getPassword())) {
-                throw new InvalidCredentialsException("Email ya da şifre yanlış.");
+                throw new InvalidCredentialsException("Email or password is not correct.");
             }
             AuthenticationResponse authResponse = jwtService.generateToken(account);
             return new ApiResponse<>(true, authResponse ,"Login successful.");
