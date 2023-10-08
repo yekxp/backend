@@ -2,6 +2,12 @@
 
 Please read the CONTRIBUTING.md first.
 
+## Running for frontend development (no postgres installation required):
+1. Download the code.
+2. Ensure that "docker" and "docker compose" is installed and you get meaningful response when you type `docker compose version` on terminal.
+3. Run `docker compose up` in the root folder.
+4. That's it! You will be able to access the application from `http://localhost:8080`.
+
 ## Development
 1. Fork the project. While forking, disable "Copy only main branch" option.
 2. Ensure that you configured your ssh keys with github: https://docs.github.com/en/authentication/connecting-to-github-with-ssh
