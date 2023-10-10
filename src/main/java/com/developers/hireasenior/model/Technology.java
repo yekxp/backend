@@ -15,4 +15,5 @@ public class Technology {
     private String name;
     private String code;
     private String description;
+    private String imageUrl;
 }
