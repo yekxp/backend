@@ -31,9 +31,11 @@ public class Account implements UserDetails {
     private Title title;
     private Double hourlyPrice;
     private String currency;
-    @OneToMany(mappedBy = "junior")
+
+    @OneToMany(mappedBy = "junior", cascade=CascadeType.ALL)
     private List<SessionRequest> sessionRequests;
-    @ManyToMany
+
+    @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(
             name = "account_technologies",
             joinColumns = @JoinColumn(name = "account_id"),
@@ -41,7 +43,7 @@ public class Account implements UserDetails {
     )
     private Set<Technology> technologies = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(
             name = "languages_spoken",
             joinColumns = @JoinColumn(name = "account_id"),

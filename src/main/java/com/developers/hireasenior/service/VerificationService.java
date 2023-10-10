@@ -5,7 +5,7 @@ import com.developers.hireasenior.model.Account;
 import com.developers.hireasenior.model.VerifyEmail;
 import com.developers.hireasenior.repository.AccountRepository;
 import com.developers.hireasenior.repository.VerifyMailRepository;
-import com.developers.hireasenior.util.RandomGenerator;
+import com.developers.hireasenior.utils.RandomGenerator;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;

@@ -3,6 +3,7 @@ package com.developers.hireasenior.service;
 import com.developers.hireasenior.dto.request.LoginRequest;
 import com.developers.hireasenior.dto.response.AuthenticationResponse;
 import com.developers.hireasenior.exception.InvalidCredentialsException;
+import com.developers.hireasenior.mapper.AccountMapper;
 import com.developers.hireasenior.model.Role;
 import com.developers.hireasenior.model.VerifyEmail;
 import com.developers.hireasenior.repository.AccountRepository;
@@ -23,7 +24,6 @@ import com.developers.hireasenior.dto.request.RegistrationRequest;
 import com.developers.hireasenior.dto.response.ApiResponse;
 import com.developers.hireasenior.dto.response.RegistrationResponse;
 import com.developers.hireasenior.exception.EmailAlreadyExistsException;
-import com.developers.hireasenior.mapper.AccountMapper;
 import com.developers.hireasenior.model.Account;
 
 import javax.security.auth.login.AccountNotFoundException;
@@ -31,8 +31,9 @@ import javax.security.auth.login.AccountNotFoundException;
 @Service
 @AllArgsConstructor
 public class AuthService implements UserDetailsService {
-    private final AccountRepository accountRepository;
+
     private final AccountMapper accountMapper;
+    private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final MailService mailService;
@@ -63,9 +64,12 @@ public class AuthService implements UserDetailsService {
 
             Account account = accountRepository.save(newAccount);
             logger.info("Account registered successfully: {}", account.getFirstName());
+
             VerifyEmail verifyEmail = verificationService.createVerification(account.getEmail());
             mailService.sendVerificationMail(request.getEmail(), verifyEmail.getToken());
-            return new ApiResponse<>(true, new RegistrationResponse(accountMapper.toDto(account)),
+
+            RegistrationResponse registrationResponse = new RegistrationResponse(accountMapper.accountEntityToDto(account));
+            return new ApiResponse<>(true, registrationResponse,
                     "Account created successfully.");
         } catch(EmailAlreadyExistsException e) {
             logger.error("Email already exists: " + request.getEmail());

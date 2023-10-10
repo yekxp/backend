@@ -1,37 +1,20 @@
 package com.developers.hireasenior.mapper;
 
-import org.springframework.stereotype.Component;
-
 import com.developers.hireasenior.dto.AccountDto;
-
 import com.developers.hireasenior.model.Account;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
+import java.util.List;
 
-@Component
-public class AccountMapper {
-     public AccountDto toDto(Account entity) {
-        AccountDto dto = new AccountDto();
-        dto.setFirstName(entity.getFirstName());
-        dto.setEmail(entity.getEmail());
-        dto.setPassword(entity.getPassword());
-        dto.setVerified(entity.getVerified());
-        dto.setRole(entity.getRole());
-        dto.setTitle(entity.getTitle());
-        dto.setHourlyPrice(entity.getHourlyPrice());
-        dto.setCurrency(entity.getCurrency());
-        return dto;
-    }
+@Mapper(componentModel = "spring")
+public interface AccountMapper {
 
-    public Account toEntity(AccountDto dto){
-       Account entity=new Account();
-       entity.setFirstName(dto.getFirstName());
-       entity.setEmail(dto.getEmail());
-       entity.setPassword(dto.getPassword());
-       entity.setVerified(dto.getVerified());
-       entity.setRole(dto.getRole());
-       entity.setTitle(dto.getTitle());
-       entity.setHourlyPrice(dto.getHourlyPrice());
-       entity.setCurrency(dto.getCurrency());
-       return entity;
-    }
+    AccountMapper INSTANCE = Mappers.getMapper(AccountMapper.class);
+    AccountDto accountEntityToDto(Account account);
+    Account accountDtoToAccount(AccountDto accountDto);
+
+    List<AccountDto> accountListToDtoList(List<Account> accounts);
+    List<Account> accountDtoListToAccountList(List<AccountDto> accountDtos);
 }
+

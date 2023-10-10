@@ -5,7 +5,6 @@ import com.developers.hireasenior.dto.request.CreateSessionRequestRequest;
 import com.developers.hireasenior.dto.response.AcceptSessionResponse;
 import com.developers.hireasenior.dto.response.ApiResponse;
 import com.developers.hireasenior.dto.response.CreateSessionRequestResponse;
-import com.developers.hireasenior.dto.response.CreateSessionResponse;
 import com.developers.hireasenior.service.SessionRequestService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

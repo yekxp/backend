@@ -1,4 +1,4 @@
-package com.developers.hireasenior.util;
+package com.developers.hireasenior.utils;
 
 import org.springframework.stereotype.Component;
 
