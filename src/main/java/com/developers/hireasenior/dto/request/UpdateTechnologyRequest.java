@@ -14,4 +14,5 @@ public class UpdateTechnologyRequest {
     @NotBlank(message = "Code is required.")
     private String code;
     private String description;
+    private String imageUrl;
 }

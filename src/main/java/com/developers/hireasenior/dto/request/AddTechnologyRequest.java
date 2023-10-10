@@ -14,4 +14,6 @@ public class AddTechnologyRequest {
     @NotBlank(message = "Code is required.")
     private String code;
     private String description;
+    @NotBlank(message = "Image URL is required.")
+    private String imageUrl;
 }
