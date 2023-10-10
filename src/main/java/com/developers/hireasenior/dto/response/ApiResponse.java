@@ -7,6 +7,7 @@ public class ApiResponse<T> {
     private boolean success;
     private T data;
     private String message;
+    private boolean showNotification = true;
 
     public ApiResponse() {
     }
@@ -20,5 +21,12 @@ public class ApiResponse<T> {
         this.success = success;
         this.data = data;
         this.message = message;
+    }
+
+    public ApiResponse(boolean success, T data, String message, boolean showNotification) {
+        this.success = success;
+        this.data = data;
+        this.message = message;
+        this.showNotification = showNotification;
     }
 }

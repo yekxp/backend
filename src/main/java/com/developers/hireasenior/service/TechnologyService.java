@@ -49,10 +49,10 @@ public class TechnologyService {
         try {
             List<Technology> technologies = technologyRepository.findAll();
             logger.info("Technologies found: {}", technologies.size());
-            return new ApiResponse<>(true, new ListTechnologiesResponse(technologies), "Technologies successfully listed.");
+            return new ApiResponse<>(true, new ListTechnologiesResponse(technologies), "Technologies successfully listed.", false);
         } catch (Exception e) {
             logger.error("An unknown error occurred when listing technologies: {}", e.getMessage());
-            return new ApiResponse<>(false, null, "An unknown error occurred when listing technologies.");
+            return new ApiResponse<>(false, null, "An unknown error occurred when listing technologies.", false);
         }
     }
 
