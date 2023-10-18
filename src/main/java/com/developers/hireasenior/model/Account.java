@@ -34,7 +34,7 @@ public class Account implements UserDetails {
     private Double hourlyPrice;
     private String currency;
 
-    @OneToMany(mappedBy = "junior", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "junior")
     private List<SessionRequest> sessionRequests;
 
     @ManyToMany
