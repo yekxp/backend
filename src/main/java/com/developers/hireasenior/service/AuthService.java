@@ -3,8 +3,10 @@ package com.developers.hireasenior.service;
 import com.developers.hireasenior.dto.request.LoginRequest;
 import com.developers.hireasenior.dto.response.AuthenticationResponse;
 import com.developers.hireasenior.exception.InvalidCredentialsException;
-import com.developers.hireasenior.mapper.AccountMapper;
+import com.developers.hireasenior.exception.ResourceNotFoundException;
+import com.developers.hireasenior.exception.TitleNotAllowedException;
 import com.developers.hireasenior.model.Role;
+import com.developers.hireasenior.model.Title;
 import com.developers.hireasenior.model.VerifyEmail;
 import com.developers.hireasenior.repository.AccountRepository;
 import jakarta.transaction.Transactional;
@@ -27,6 +29,7 @@ import com.developers.hireasenior.exception.EmailAlreadyExistsException;
 import com.developers.hireasenior.model.Account;
 
 import javax.security.auth.login.AccountNotFoundException;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -43,8 +46,8 @@ public class AuthService implements UserDetailsService {
     @Transactional
     public ApiResponse<RegistrationResponse> register(RegistrationRequest request) {
         try {
-            Account foundAccount = accountRepository.findByEmail(request.getEmail());
-            if (foundAccount != null) {
+            Optional<Account> foundAccount = accountRepository.findByEmail(request.getEmail());
+            if (foundAccount.isPresent()) {
                 throw new EmailAlreadyExistsException("Email already exists.");
             }
 
@@ -82,24 +85,29 @@ public class AuthService implements UserDetailsService {
 
     public ApiResponse<AuthenticationResponse> login(LoginRequest loginRequest) throws Exception {
         try {
-            Account account = accountRepository.findByEmail(loginRequest.getEmail());
+            Account account = accountRepository.findByEmail(loginRequest.getEmail())
+                    .orElseThrow(() -> new ResourceNotFoundException("Account with this email does not exist."));
             if(!passwordEncoder.matches(loginRequest.getPassword(), account.getPassword())) {
-                throw new InvalidCredentialsException("Email ya da şifre yanlış.");
+                throw new InvalidCredentialsException("Email or password is not correct.");
             }
             AuthenticationResponse authResponse = jwtService.generateToken(account);
             return new ApiResponse<>(true, authResponse ,"Login successful.");
+        } catch (ResourceNotFoundException e) {
+            logger.error("Account with email {} not exists.", loginRequest.getEmail());
+            return new ApiResponse<>(false, null, "Account with this email does not exist.");
         } catch (InvalidCredentialsException e) {
             logger.error("Login failed, invalid credentials: " + loginRequest.getEmail());
-            throw new InvalidCredentialsException("Invalid credentials.");
+            return new ApiResponse<>(false, null, "Credentials are not correct.");
         } catch (Exception e) {
             logger.error("Login failed with an unknown reason: " + e.getMessage());
-            throw new Exception("Login failed: " + e.getMessage());
+            return new ApiResponse<>(false, null, "Error when login.");
         }
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Account account = accountRepository.findByEmail(email);
+        Account account = accountRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Account with this email not found."));
         if (account == null) {
             throw new UsernameNotFoundException("Account not found.");
         }
@@ -117,6 +125,30 @@ public class AuthService implements UserDetailsService {
         authenticationProvider.setUserDetailsService(AuthService.this);
         authenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
         return authenticationProvider;
+    }
+
+    public Account extractAccountFromToken(String token) throws AccountNotFoundException {
+        String accountId = jwtService.extractAccountId(token.replace("Bearer ", ""));
+        return findAccountById(accountId);
+    }
+
+    public Account doesTokenHaveTitleOf(String token, Title title) throws AccountNotFoundException, TitleNotAllowedException {
+        String requesterId = jwtService.extractAccountId(token.replace("Bearer ", ""));
+        Account account = findAccountById(requesterId);
+        if(!(account.getTitle() == title)) {
+            throw new TitleNotAllowedException("Only " + title + " can execute this operation.");
+        }
+        return account;
+    }
+
+    public ApiResponse<AuthenticationResponse> refreshToken(String refreshToken) throws Exception {
+        try {
+            AuthenticationResponse authResponse = jwtService.refreshToken(refreshToken);
+            return new ApiResponse<>(true, authResponse ,"Token refreshed successfully.");
+        } catch (Exception e) {
+            logger.error("Token refresh failed with an unknown reason: " + e.getMessage());
+            return new ApiResponse<>(false, null, "Error when refreshing token.");
+        }
     }
 
 

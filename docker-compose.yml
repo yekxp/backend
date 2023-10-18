@@ -1,7 +1,4 @@
 version: '3.1'
-volumes:
-  postgres-data:
-    driver: local
 services:
   hire-a-senior:
     container_name: hire-a-senior
@@ -31,5 +28,3 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    volumes:
-      - postgres-data:/var/lib/postgresql/data

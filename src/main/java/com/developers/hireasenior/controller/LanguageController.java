@@ -1,9 +1,7 @@
 package com.developers.hireasenior.controller;
 
-import com.developers.hireasenior.dto.request.AddLanguageRequest;
-import com.developers.hireasenior.dto.response.ApiResponse;
-import com.developers.hireasenior.dto.response.AddLanguageResponse;
-import com.developers.hireasenior.dto.response.ListLanguagesResponse;
+import com.developers.hireasenior.dto.request.*;
+import com.developers.hireasenior.dto.response.*;
 import com.developers.hireasenior.service.LanguageService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -24,5 +22,15 @@ public class LanguageController {
     @GetMapping("/list")
     public ResponseEntity<ApiResponse<ListLanguagesResponse>> listLanguages() {
         return ResponseEntity.ok(languageService.listLanguages());
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<ApiResponse<UpdateLanguageResponse>> updateLanguage(@Valid @RequestBody UpdateLanguageRequest request){
+        return ResponseEntity.ok(languageService.updateLanguage(request));
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<ApiResponse<DeleteLanguageResponse>> deleteTechnology(@Valid @RequestBody DeleteLanguageRequest request){
+        return ResponseEntity.ok(languageService.deleteTechnology(request));
     }
 }

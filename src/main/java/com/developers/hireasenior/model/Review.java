@@ -4,16 +4,20 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
-@Table(name = "technologies")
-public class Technology {
+@Table(name = "reviews")
+public class Review {
     @Id
-    @GeneratedValue(generator = "UUID")
+    @GeneratedValue
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
-    private String name;
-    private String code;
-    private String description;
-    private String imageUrl;
+    private String text;
+    private String juniorId;
+    private String seniorId;
+
+    private LocalDateTime date;
+    private String rating;
 }

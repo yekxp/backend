@@ -10,13 +10,15 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Set;
 
+import java.util.Optional;
+
 
 public interface AccountRepository extends JpaRepository<Account, String>  {
-    Account findByEmail(String email);
     List<Account> findAllByTechnologiesIn(Set<Technology> technologies);
     @Query("SELECT DISTINCT a FROM Account a JOIN a.availablePeriods ap WHERE ap.startedAt <= :startedAt AND ap.endedAt >= :endedAt")
     List<Account> findAllByAvailablePeriodsInDateRange(
             @Param("startedAt") Date startDate,
             @Param("endedAt") Date endDate
     );
+    Optional<Account> findByEmail(String email);
 }

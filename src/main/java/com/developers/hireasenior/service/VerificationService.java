@@ -1,6 +1,7 @@
 package com.developers.hireasenior.service;
 
 import com.developers.hireasenior.dto.response.ApiResponse;
+import com.developers.hireasenior.exception.ResourceNotFoundException;
 import com.developers.hireasenior.model.Account;
 import com.developers.hireasenior.model.VerifyEmail;
 import com.developers.hireasenior.repository.AccountRepository;
@@ -61,7 +62,8 @@ public class VerificationService {
     }
 
     public void verifyAccount(String email) {
-        Account account = accountRepository.findByEmail(email);
+        Account account = accountRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Account with this email not found."));
         account.setVerified(true);
         accountRepository.save(account);
         logger.info("Account verified successfully: {}", account.getEmail());
