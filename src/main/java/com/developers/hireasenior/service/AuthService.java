@@ -48,18 +48,18 @@ public class AuthService implements UserDetailsService {
                 throw new EmailAlreadyExistsException("Email already exists.");
             }
 
-            String ecryptedPassword = passwordEncoder.encrypt(request.getPassword());
+            String encryptedPassword = passwordEncoder.encrypt(request.getPassword());
             Account newAccount = new Account();
             newAccount.setFirstName(request.getFirstName());
             newAccount.setTitle(request.getTitle());
             newAccount.setEmail(request.getEmail());
-            newAccount.setPassword(ecryptedPassword);
+            newAccount.setPassword(encryptedPassword);
             newAccount.setRole(Role.USER);
             newAccount.setCurrency(request.getCurrency());
             newAccount.setHourlyPrice(request.getHourlyPrice());
             newAccount.setTechnologies(request.getTechnologies());
             newAccount.setLanguagesSpoken(request.getLanguagesSpoken());
-            newAccount.setAvailablePeriod(request.getAvailablePeriod());
+            newAccount.setAvailablePeriods(request.getAvailablePeriods());
             newAccount.setDateOfBirth(request.getDateOfBirth());
 
             Account account = accountRepository.save(newAccount);

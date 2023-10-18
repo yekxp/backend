@@ -38,7 +38,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/verification/**").permitAll()
                         .requestMatchers("/api/v1/technology/list", "/api/v1/language/list").permitAll()
-                        .requestMatchers("/api/v1/account/seniorsBasedOnTechnologiesAvailableTime").permitAll()
+                        .requestMatchers("/api/v1/account/developersByTechnologiesAndAvailableTime").permitAll()
                         .requestMatchers("/api/v1/technology/add", "/api/v1/language/add").hasAnyAuthority("ADMIN")
                         .anyRequest().authenticated()
 

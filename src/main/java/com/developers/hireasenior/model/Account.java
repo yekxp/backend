@@ -1,5 +1,6 @@
 package com.developers.hireasenior.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -16,6 +17,7 @@ import java.util.*;
 @Data
 @Table(name = "accounts")
 @JsonPropertyOrder({"id", "firstName", "email", "password", "verified", "role", "title", "hourlyPrice", "currency", "createdAt", "updatedAt"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "sessionRequests", "technologies", "languagesSpoken"})
 public class Account implements UserDetails {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -35,7 +37,7 @@ public class Account implements UserDetails {
     @OneToMany(mappedBy = "junior", cascade=CascadeType.ALL)
     private List<SessionRequest> sessionRequests;
 
-    @ManyToMany(cascade=CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
             name = "account_technologies",
             joinColumns = @JoinColumn(name = "account_id"),
@@ -43,7 +45,7 @@ public class Account implements UserDetails {
     )
     private Set<Technology> technologies = new HashSet<>();
 
-    @ManyToMany(cascade=CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
             name = "languages_spoken",
             joinColumns = @JoinColumn(name = "account_id"),
@@ -51,7 +53,13 @@ public class Account implements UserDetails {
     )
     private Set<Language> languagesSpoken = new HashSet<>();
 
-    private String availablePeriod;
+    @ManyToMany(cascade=CascadeType.ALL)
+    @JoinTable(
+            name = "developer_available_periods",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name = "available_period_id")
+    )
+    private Set<AvailablePeriod> availablePeriods;
     private Date dateOfBirth;
 
     @CreatedDate

@@ -1,5 +1,6 @@
 package com.developers.hireasenior.dto.request;
 
+import com.developers.hireasenior.model.AvailablePeriod;
 import com.developers.hireasenior.model.Language;
 import com.developers.hireasenior.model.Technology;
 import com.developers.hireasenior.model.Title;
@@ -28,6 +29,6 @@ public class RegistrationRequest {
     private String currency;
     private Set<Technology> technologies;
     private Set<Language> languagesSpoken;
-    private String availablePeriod;
+    private Set<AvailablePeriod> availablePeriods;
     private Date dateOfBirth;
 }

@@ -1,9 +1,6 @@
 package com.developers.hireasenior.dto;
 
-import com.developers.hireasenior.model.Language;
-import com.developers.hireasenior.model.Role;
-import com.developers.hireasenior.model.Technology;
-import com.developers.hireasenior.model.Title;
+import com.developers.hireasenior.model.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +23,6 @@ public class AccountDto {
     private String currency;
     private Set<Technology> technologies;
     private Set<Language> languagesSpoken;
-    private String availablePeriod;
+    private Set<AvailablePeriod> availablePeriods;
     private Date dateOfBirth;
 }
