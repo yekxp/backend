@@ -19,7 +19,7 @@ public class AccountController {
 
     private final AccountService accountService;
 
-    @GetMapping("/developersByTechnologiesAndAvailableTime")
+    @PostMapping("/developers-by-technologies-and-available-time")
     public ResponseEntity<ApiResponse<List<AccountDto>>> filteredSeniorsTechnologyTime(@Valid @RequestBody TechnologyAndPeriodRequest technologyAndPeriodRequest) {
         ApiResponse<List<AccountDto>> apiAccountsByTechnologies = accountService.findByTechnologies(technologyAndPeriodRequest.getTechnologyDtoSet());
 

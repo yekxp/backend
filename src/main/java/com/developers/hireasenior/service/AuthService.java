@@ -5,6 +5,7 @@ import com.developers.hireasenior.dto.response.AuthenticationResponse;
 import com.developers.hireasenior.exception.InvalidCredentialsException;
 import com.developers.hireasenior.exception.ResourceNotFoundException;
 import com.developers.hireasenior.exception.TitleNotAllowedException;
+import com.developers.hireasenior.mapper.AccountMapper;
 import com.developers.hireasenior.model.Role;
 import com.developers.hireasenior.model.Title;
 import com.developers.hireasenior.model.VerifyEmail;
