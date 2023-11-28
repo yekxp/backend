@@ -15,5 +15,14 @@ public class Technology {
     private String name;
     private String code;
     private String description;
-    private String imageUrl;
+
+    public Technology() {
+    }
+
+    public Technology(String id, String name, String code, String description) {
+        this.id = id;
+        this.name = name;
+        this.code = code;
+        this.description = description;
+    }
 }

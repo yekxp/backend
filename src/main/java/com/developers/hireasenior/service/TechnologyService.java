@@ -31,7 +31,6 @@ public class TechnologyService {
             Technology technology = new Technology();
             technology.setName(request.getName());
             technology.setCode(request.getCode());
-            technology.setImageUrl(request.getImageUrl());
             technology.setDescription(request.getDescription());
             technologyRepository.save(technology);
             logger.info("Technology created successfully: {}", technology.getCode());
@@ -64,9 +63,7 @@ public class TechnologyService {
             }
             existTechnology.setName(request.getName());
             existTechnology.setDescription(request.getDescription());
-            if(request.getImageUrl() != null){
-                existTechnology.setImageUrl(request.getImageUrl());
-            }
+
             technologyRepository.save(existTechnology);
             logger.info("Technology updated successfully: {}", existTechnology.getCode());
             return new ApiResponse<>(true, new UpdateTechnologyResponse(existTechnology), "Technology updated successfully.");

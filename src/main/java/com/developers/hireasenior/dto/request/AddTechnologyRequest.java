@@ -6,14 +6,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class AddTechnologyRequest {
     @NotBlank(message = "Name is required.")
     private String name;
     @NotBlank(message = "Code is required.")
     private String code;
     private String description;
-    @NotBlank(message = "Image URL is required.")
-    private String imageUrl;
+
+    public AddTechnologyRequest() {
+    }
+
+    public AddTechnologyRequest(String name, String code, String description) {
+        this.name = name;
+        this.code = code;
+        this.description = description;
+    }
 }
