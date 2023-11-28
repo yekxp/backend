@@ -18,6 +18,14 @@
 		<java.version>17</java.version>
 	</properties>
 
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub Packages</name>
+			<url>https://maven.pkg.github.com/yekxp/backend</url>
+		</repository>
+	</distributionManagement>
+
 	<scm>
 		<connection>scm:git:https://github.com/yekxp/backend.git</connection>
 		<developerConnection>scm:git:https://github.com/yekxp/backend.git</developerConnection>
