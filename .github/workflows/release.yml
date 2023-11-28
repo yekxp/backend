@@ -1,5 +1,4 @@
-name: Deploy to GitHub Packages
-
+name: Release packages
 on:
   push:
     branches:
@@ -19,11 +18,6 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-
-    - name: Configure Git Identity
-      run: |
-        git config --global user.email "you@example.com"
-        git config --global user.name "Your Name"
 
     - name: Build and Deploy
       run: mvn -B deploy --file pom.xml
