@@ -3,8 +3,8 @@ services:
   hire-a-senior:
     container_name: hire-a-senior
     build:
-      context: ./
-      dockerfile: ./Dockerfile
+      context: ../..
+      dockerfile: ../../Dockerfile
     image: 'hire-a-senior:0.0.1'
     ports:
       - "8080:8080"
