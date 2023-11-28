@@ -1,0 +1,32 @@
+name: Deploy to GitHub Packages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Configure Git Identity
+      run: |
+        git config --global user.email "you@example.com"
+        git config --global user.name "Your Name"
+
+    - name: Build and Deploy
+      run: mvn -B deploy --file pom.xml
+      env:
+        CI: true
+        MAVEN_CLI_OPTS: -s .github/settings.xml  # Path to Maven settings.xml with GitHub token
