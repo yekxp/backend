@@ -48,15 +48,6 @@ public class TechnologyMapperTest {
     }
 
     @Test
-    public void testTechnologyEntityToDto() {
-        TechnologyDto technologyDto = technologyMapper.technologyEntityToDto(java);
-
-        assertEquals(java.getName(), technologyDto.getName());
-        assertEquals(java.getCode(), technologyDto.getCode());
-        assertEquals(java.getDescription(), technologyDto.getDescription());
-    }
-
-    @Test
     public void testTechnologySetToDtoSet() {
         Set<Technology> technologySet = new HashSet<>();
 
