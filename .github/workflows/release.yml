@@ -29,4 +29,5 @@ jobs:
       run: mvn -B deploy --file pom.xml
       env:
         CI: true
-        MAVEN_CLI_OPTS: -s .github/settings.xml  # Path to Maven settings.xml with GitHub token
+        MAVEN_CLI_OPTS: -s .github/settings.xml
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
